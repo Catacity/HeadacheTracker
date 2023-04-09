@@ -1,3 +1,3 @@
 # HeadacheTracker
-a new repo for personal data
-test
+a new github repository for personal data interaction and wearables
+project name : Headache Tracker

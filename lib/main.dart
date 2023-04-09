@@ -1,19 +1,45 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:headache_tracker/loginpage.dart';
 
 void main() {
+  runApp(const MyApp());
   // const MyApp() is the root widget of our app (Widgets are just classes)
   // Note: Widget functions all start with CAPITAL letters
 
   // We are nesting widgets -> widget tree!
   runApp(MaterialApp(
-    // Scaffold widget:
-    //  Allows us to implement basic layout for our app
+      // Scaffold widget:
+      //  Allows us to implement basic layout for our app
     home: HeadacheFormMenu(),
   ));
 }
 
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
+    );
+  }
+}
 // Enables Hot Reload
-class HeadacheFormMenu extends StatelessWidget{
+class HeadacheFormMenu extends StatelessWidget {
+  // State of the widget cannot change overtime
+  // vs Stateful widget (with changing data overtime)
+
+  // Overriding ancestor's build()
+  @override
+  Future<void> debugFillProperties(DiagnosticPropertie) async {
+    DiagnosticPropertiesBuilder properties;
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('context'));
+  }
+}
+async {
   // State of the widget cannot change overtime
   // vs Stateful widget (with changing data overtime)
 
@@ -354,65 +380,75 @@ class HeadacheFormMenu extends StatelessWidget{
 
                 //  Row 7
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        height: 50,
-                        width: 350,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(10)
+                  children: [
+                    Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Container(
+                                        height: 50,
+                                        width: 350,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)
+                                            ),
+                                            color: Colors.transparent
+                                        ),
+                                        child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Container(
+                                                // padding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    // Confirm...
+                                                  },
+                                                  child: Text("Confirm",
+                                                      style: TextStyle(
+                                                        fontSize: 20.0,
+                                                        fontWeight: FontWeight.bold,
+                                                        fontFamily: 'ComicNeue',
+                                                        color: Colors.black
+                                                      ),
+                                                  ),
+                                                  style: ButtonStyle(
+                                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.lightGreenAccent),
+                                                  )
+                                                ),
+                                              ),
+
+                                              Container(
+                                                // padding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                                                child: ElevatedButton(
+                                                    onPressed: () {
+                                                      // Confirm...
+                                                    },
+                                                    child: Text("Cancel",
+                                                      style: TextStyle(
+                                                          fontSize: 20.0,
+                                                          fontWeight: FontWeight.bold,
+                                                          fontFamily: 'ComicNeue',
+                                                          color: Colors.black
+                                                      ),
+                                                    ),
+                                                    style: ButtonStyle(
+                                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                                                    )
+                                                ),
+                                              ),
+                                            ]
+                                        ),
+
+
+                                      ),
+                                    ]
+                                ),
+                              ],
                             ),
-                            color: Colors.transparent
+                          ],
                         ),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Container(
-                                // padding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    // Confirm...
-                                  },
-                                  child: Text("Confirm",
-                                      style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'ComicNeue',
-                                        color: Colors.black
-                                      ),
-                                  ),
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.lightGreenAccent),
-                                  )
-                                ),
-                              ),
-
-                              Container(
-                                // padding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                                child: ElevatedButton(
-                                    onPressed: () {
-                                      // Confirm...
-                                    },
-                                    child: Text("Cancel",
-                                      style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'ComicNeue',
-                                          color: Colors.black
-                                      ),
-                                    ),
-                                    style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                                    )
-                                ),
-                              ),
-                            ]
-                        ),
-
-
-                      ),
-                    ]
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -468,4 +504,4 @@ class HeadacheFormMenu extends StatelessWidget{
 //   //   icon: Icon(Icons.add),
 //   //   color: Colors.grey,
 //   // )
-// ),
+}
