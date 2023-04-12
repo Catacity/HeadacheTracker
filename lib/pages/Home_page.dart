@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Daily Form',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.headset_mic_outlined),
+            icon: Icon(Icons.menu_book_outlined),
             label: 'Headache',
           ),
           BottomNavigationBarItem(
