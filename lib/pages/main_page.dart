@@ -78,7 +78,58 @@ class HeadacheFormMenu extends StatelessWidget {
               ]
           ),
 
-          // Row 3
+          //  Row 3
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  height: 50,
+                  width: 350,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(10)
+                      ),
+                      color: Colors.white
+                  ),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                          child: Icon(
+                            Icons.timelapse_rounded,
+                            color: Colors.purpleAccent,
+                            size: 25.0,
+                          ),
+                        ),
+                        Container(
+                          child: Text("Period of the day?",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'ComicNeue',
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: IconButton(
+                            onPressed: () {
+                              // Impletement goto page here!
+                            },
+                            icon: Icon(
+                              Icons.add,
+                              size: 25.0,
+                            ),
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ]
+                  ),
+                ),
+              ]
+          ),
+
+          // Row 4
           Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -129,7 +180,7 @@ class HeadacheFormMenu extends StatelessWidget {
               ]
           ),
 
-          // Row 4
+          // Row 5
           Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -180,7 +231,7 @@ class HeadacheFormMenu extends StatelessWidget {
               ]
           ),
 
-          //  Row 5
+          //  Row 6
           Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -206,57 +257,6 @@ class HeadacheFormMenu extends StatelessWidget {
                         ),
                         Container(
                           child: Text("Did you take any medicine?",
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'ComicNeue',
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: IconButton(
-                            onPressed: () {
-                              // Impletement goto page here!
-                            },
-                            icon: Icon(
-                              Icons.add,
-                              size: 25.0,
-                            ),
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ]
-                  ),
-                ),
-              ]
-          ),
-
-          //  Row 6
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  height: 50,
-                  width: 350,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      ),
-                      color: Colors.white
-                  ),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                          child: Icon(
-                            Icons.timelapse_rounded,
-                            color: Colors.purpleAccent,
-                            size: 25.0,
-                          ),
-                        ),
-                        Container(
-                          child: Text("Period of the day?",
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
