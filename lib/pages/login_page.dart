@@ -33,9 +33,9 @@ import 'package:fluttertest/components/square_tile.dart';
               ), //icon
 
               SizedBox(height: 50),
-              // welcome back, you've been missed!
+              // Already have an account! please log in!
               Text(
-                'Welcome back you\'ve been missed!',
+                'Already have an account! please log in!',
                 style: TextStyle(
                   color: Colors.grey[700],
                   fontSize: 16,
