@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertest/pages/medicine_page.dart';
 
 DateTime now = DateTime.now();
 DateTime todayDate = DateTime(now.year,now.month,now.day);
@@ -17,6 +18,9 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
   TimeOfDay _TODHeadache = TODNow;
 
   var intensityRange = ['Mild','Moderate','Strong','Intense'];
+  var pages = [
+    MedicineFormMenu(),
+    MedicineFormMenu()];
   int _intensityLevel = 0;
 
   String? _hasOtherSymptoms;
@@ -29,6 +33,10 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
     // Form submission.
     // You can access the values of the form inputs using the _sleepQuality,
     // _hours, _minutes, and _image variables.
+  }
+
+  void _navigateToNextScreen(BuildContext context,int pageIdx) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => pages[pageIdx]));
   }
 
   @override
@@ -245,7 +253,7 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
                                   setState(() => _TODHeadache = newTime);
                                 }
                               },
-                              child: Text('Select Date'),
+                              child: Text('Select Time'),
                             ),
                           ),
                         ],
@@ -380,7 +388,9 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
                         Container(
                           child: IconButton(
                             onPressed: () {
-                              // Impletement goto page here!
+                              // // Goto symptoms page form, retrieve filled in data
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (context) => SymptomForm))
                             },
                             icon: Icon(
                               Icons.add,
@@ -431,7 +441,8 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
                         Container(
                           child: IconButton(
                             onPressed: () {
-                              // Impletement goto page here!
+                              // Goto medicine page
+                              _navigateToNextScreen(context,1);
                             },
                             icon: Icon(
                               Icons.add,
