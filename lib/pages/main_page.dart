@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertest/pages/symptoms_page.dart';
 import 'package:fluttertest/pages/medicine_page.dart';
 
 DateTime now = DateTime.now();
@@ -12,22 +13,15 @@ class HeadacheFormMenu extends StatefulWidget {
 
 class _HeadacheFormState extends State<HeadacheFormMenu> {
   // Text field controller:
-  TextEditingController _otherSymptomsTextController = TextEditingController();
 
   DateTime _date = todayDate;
   TimeOfDay _TODHeadache = TODNow;
 
   var intensityRange = ['Mild','Moderate','Strong','Intense'];
   var pages = [
-    MedicineFormMenu(),
+    SymptomFormMenu(),
     MedicineFormMenu()];
   int _intensityLevel = 0;
-
-  String? _hasOtherSymptoms;
-  String _SymptomsDescription= '';
-
-  DateTime _MedicineDate = todayDate;
-  TimeOfDay _TODMedicine = TODNow;
 
   void _submitHeadacheForm() {
     // Form submission.
@@ -37,23 +31,6 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
 
   void _navigateToNextScreen(BuildContext context,int pageIdx) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => pages[pageIdx]));
-  }
-
-  @override
-  void initState(){
-    super.initState();
-
-    // Initializing the controllers with the default values
-    _otherSymptomsTextController = TextEditingController(text: "");
-    // _medicineDateTextController = TextEditingController(text: );
-  }
-
-  @override
-  void dispose() {
-    // Dtor
-    _otherSymptomsTextController.dispose();
-
-    super.dispose();
   }
 
   @override
@@ -388,9 +365,8 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
                         Container(
                           child: IconButton(
                             onPressed: () {
-                              // // Goto symptoms page form, retrieve filled in data
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //     builder: (context) => SymptomForm))
+                              // Goto symptoms page form, retrieve filled in data
+                              _navigateToNextScreen(context,0);
                             },
                             icon: Icon(
                               Icons.add,
