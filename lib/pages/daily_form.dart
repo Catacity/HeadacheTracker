@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:fluttertest/databasemodel/dailyForm.dart';
+
 class DailyForm extends StatefulWidget {
   @override
   State<DailyForm> createState() => _DailyFormState();
@@ -24,19 +26,66 @@ class _DailyFormState extends State<DailyForm> {
     });
   }
 
+  // Question: How do we store the image to db?
   double _sleepQuality = 50;
   int _hours = 0;
   int _minutes = 0;
   TextEditingController _textController = TextEditingController();
   int _stressLevel = 1;
+  // So pre fill-in for _didExercise == null
   String? _didExercise;
   String _exerciseType = '';
   String _exerciseDuration = '';
 
-  void _submitForm() {
+  // For testing
+  String? userid = "3";
+
+  void _submitForm() async{
     // This is where you would handle the form submission.
     // You can access the values of the form inputs using the _sleepQuality,
     // _hours, _minutes, and _image variables.
+
+    // For sleep quality, should we round it at the end?
+    print("Sleep quality:" +_sleepQuality.toString());
+
+    print("Sleep hours:" +_hours.toString());
+    print("Sleep minutes:" +_minutes.toString());
+    // How do we store the img?
+
+    print("WDYD:" +_textController.text);
+    print("Stress lv:" +_stressLevel.toString());
+    print("did exercise:" + _didExercise.toString());
+    print("exercise type:" + _exerciseType);
+
+    // What is the input format expected for this?
+    print("exercise dura:" + _exerciseDuration);
+
+    var ms = (new DateTime.now()).millisecondsSinceEpoch;
+    int nowInSecondsSinceEpoch = (ms / 1000).round();
+
+    print(userid);
+    await DailyFormDBHelper.instance.add(
+        DailyFormInput(
+          userid:userid,
+          TS:nowInSecondsSinceEpoch,
+          sleepQuality:_sleepQuality,
+          sleepHours:_hours,
+          sleepMinutes:_minutes,
+          dailyDescription:_textController.text,
+          stressLV: _stressLevel,
+          didExercise: _didExercise,
+          exerciseType: _exerciseType,
+          exerciseDuration: _exerciseDuration)
+    );
+
+    // Clear text
+    setState(() {
+      _textController.clear();
+    });
+
+    // DailyFormDBHelper.instance.fetchTableData();
+
+    // DailyFormDBHelper.instance.fetchLatestDailyFormByUserId("3");
   }
 
   @override
@@ -169,6 +218,7 @@ class _DailyFormState extends State<DailyForm> {
             SizedBox(height: 5),
             TextField(
               maxLength: 50,
+              controller: _textController,
               decoration: InputDecoration(
                 hintText: 'Enter your text here',
                 border: OutlineInputBorder(),
