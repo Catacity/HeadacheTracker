@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:fluttertest/databasemodel/dailyForm.dart';
+import 'package:fluttertest/databasehandler/dailyForm.dart';
 
 class DailyForm extends StatefulWidget {
   @override
