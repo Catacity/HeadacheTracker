@@ -1,164 +1,128 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertest/components/button.dart';
+import 'package:fluttertest/components/helptofill.dart';
+import 'package:fluttertest/components/loginsignupheader.dart';
 import 'package:fluttertest/components/text_field.dart';
-import 'package:fluttertest/components/square_tile.dart';
+import 'package:fluttertest/databasehandler/databaseconnect.dart';
+import 'package:fluttertest/userdata/userfile.dart';
+import 'package:fluttertest/pages/signup_page.dart';
+import 'package:fluttertest/pages/Home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+class login_page extends StatefulWidget {
+  @override
+  _login_pageState createState() => _login_pageState();
+}
 
-  class login_page extends StatelessWidget {
-    login_page({Key? key}) : super(key: key);
+class _login_pageState extends State<login_page> {
+  Future<SharedPreferences> _pref = SharedPreferences.getInstance();
+  final _formKey = new GlobalKey<FormState>();
 
+  final _conUserId = TextEditingController();
+  final _conPassword = TextEditingController();
+  var databaseconnect;
 
-  // text editing controllers
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    databaseconnect = databaseconnect();
+  }
 
-  // sign user in method
-  void signUserIn() {}
+  login() async {
+    String uid = _conUserId.text;
+    String passwd = _conPassword.text;
+
+    if (uid.isEmpty) {
+      alertDialog(context, "Please Enter User ID");
+    } else if (passwd.isEmpty) {
+      alertDialog(context, "Please Enter Password");
+    } else {
+      await databaseconnect.getLoginUser(uid, passwd).then((userData) {
+        if (userData != null) {
+          setSP(userData).whenComplete(() {
+            Navigator.pushAndRemoveUntil(
+                context, MaterialPageRoute(builder: (_) => MyHomePage()),
+                    (Route<dynamic> route) => false);
+          });
+        } else {
+          alertDialog(context, "Error: User Not Found");
+        }
+      }).catchError((error) {
+            print(error);
+            alertDialog(context, "Error: Login Fail");
+      });
+    }
+  }
+
+  Future setSP(userfile user) async {
+    final SharedPreferences sp = await _pref;
+
+    sp.setString("user_id", user.user_id);
+    sp.setString("user_name", user.user_name);
+    sp.setString("email", user.email);
+    sp.setString("password", user.password);
+    sp.setString("user_gender", user.user_gender);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
-      body: SingleChildScrollView( child:SafeArea(
-        child: Center(
+      appBar: AppBar(
+        title: Text('Login with Signup'),
+      ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+          // child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 50),
-
-              // logo
-              Icon(
-                Icons.lock,
-                size: 100,
-              ), //icon
-
-              SizedBox(height: 50),
-              // Already have an account! please log in!
-              Text(
-                'Already have an account! please log in!',
-                style: TextStyle(
-                  color: Colors.grey[700],
-                  fontSize: 16,
-                ), //text
+              loginsignupheader('Login'),
+              text_field(
+                controller: _conUserId,
+                icon: Icons.person,
+                hintName: 'User ID',
+                isObscureText: true,),
+              SizedBox(height: 10.0),
+              text_field(
+                controller: _conPassword,
+                icon: Icons.lock,
+                hintName: 'Password',
+                isObscureText: true,
               ),
-
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: TextField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'User Name',
-                      hintText: 'Enter valid mail id as abc@gmail.com'
+              Container(
+                margin: EdgeInsets.all(30.0),
+                width: double.infinity,
+                child: TextButton(
+                  child: Text(
+                    'Login',
+                    style: TextStyle(color: Colors.white),
                   ),
+                  onPressed: login,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
-                      hintText: 'Enter your secure password'
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 10),
-
-              // forgot password?
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              Container(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Forgot Password?',
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),
+                    Text('Do not have account? '),
+                    TextButton(
+                      //textColor: Colors.blue,
+                      child: Text('Signup'),
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => signup_page()));
+                      },
+                    )
                   ],
                 ),
               ),
-
-              const SizedBox(height: 25),
-
-              // sign in button
-              button(
-                onTap: signUserIn,
-              ), //button
-
-              const SizedBox(height: 50),
-
-              // or continue with
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.grey[400],
-                      ), //divider
-                    ),//expanded
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        'Or Continue With',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),//text
-                    ), //padding
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.grey[400],
-                      ),//divider
-                    ),//expanded
-                  ],
-                ),//row
-              ),//padding
-
-              const SizedBox(height: 50),
-
-              // google and facebook sign in buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  // google button
-                  square_tile(imagePath: 'lib/images/google.png'),
-
-                  SizedBox(width: 10),
-
-                  // facebook button
-                  square_tile(imagePath: 'lib/images/facebook.png'),
-
-                  SizedBox(width: 10),
-                ],
-              ),
-
-              const SizedBox(height: 50),
-
-              // not a member? register now
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Not a member?',
-                    style: TextStyle(color: Colors.grey[700]),
-                  ),
-                  const SizedBox(width: 4),
-                  const Text(
-                    'Register now',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              )
             ],
           ),
         ),
-      ),
       ),
     );
   }
