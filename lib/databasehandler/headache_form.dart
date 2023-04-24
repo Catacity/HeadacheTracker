@@ -11,3 +11,9 @@ _onConfigure(Database db) async {
 }
 Future<Database> db = openDatabase( _onConfigure(db as Database));
 
+class symptom{
+
+}
+class medicine{
+
+}
