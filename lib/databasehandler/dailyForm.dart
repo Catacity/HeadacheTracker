@@ -80,7 +80,6 @@ class DailyFormDBHelper{
       onCreate: _onCreate,
     );
   }
-
   // Create Table
   Future _onCreate(Database db, int version) async {
     await db.execute(
