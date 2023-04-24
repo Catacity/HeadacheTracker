@@ -1,6 +1,6 @@
 // For Directory
 import 'dart:io';
-
+import 'package:fluttertest/databasehandler/databaseconnect.dart';
 import 'package:sqflite/sqflite.dart';
 
 // For join()
@@ -11,7 +11,7 @@ import 'package:path_provider/path_provider.dart';
 class DailyFormInput {
 // Primary key:
   final int? dailyEntryid;
-  final String? userid;      // Foreign key
+  final String? userid; //userid; //C_UserId from table userinfo      // Foreign key
   final int TS;             // Seconds since epoch of DateTime.now();
 
   // Other fields:

@@ -58,11 +58,6 @@ class _signup_pageState extends State<signup_page> {
           print(error);
           alertDialog(context, "Error: Data Saving Failed");
         });
-//          Navigator.push(
-    //            context, MaterialPageRoute(builder: (_) => LoginForm()));
-    //    }).catchError((error) {
-    //    print(error);
-    //  alertDialog(context, "Error: Data Save Fail");});
         }
     }
   }
@@ -141,7 +136,6 @@ class _signup_pageState extends State<signup_page> {
                           children: [
                           Text('Have account Already? '),
                       TextButton(
-                          //onPressed: onPressed,
                         //textColor: Colors.blue,
                         child: Text('Sign In'),
                         onPressed: () {
@@ -158,7 +152,6 @@ class _signup_pageState extends State<signup_page> {
             ),
           ),
         ),
-
       );
     }
   }
