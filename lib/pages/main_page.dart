@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertest/pages/symptoms_page.dart';
 import 'package:fluttertest/pages/medicine_page.dart';
 
+import 'package:fluttertest/databasehandler/headacheForm.dart';
+
 DateTime now = DateTime.now();
 DateTime todayDate = DateTime(now.year,now.month,now.day);
 TimeOfDay TODNow = TimeOfDay(hour: now.hour, minute: now.minute);
@@ -12,8 +14,6 @@ class HeadacheFormMenu extends StatefulWidget {
 }
 
 class _HeadacheFormState extends State<HeadacheFormMenu> {
-  // Text field controller:
-
   DateTime _date = todayDate;
   TimeOfDay _TODHeadache = TODNow;
 
@@ -35,19 +35,68 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
   DateTime? _MedicineDate;
   TimeOfDay? _TODMedicine;
 
+  // For testing
+  String? userid = "2";
 
-  void _submitHeadacheForm() {
-    // Form submission.
-    print(_date);
-    print(_TODHeadache);
-    print(_intensityLevel);
-    print(_symptomList);
-    print(_medicineName);
-    print(_ispartial);
-    print(_isfull);
-    print(_MedicineDate);
-    print(_TODMedicine);
+  void _submitHeadacheForm() async {
+    // Form submission
+    int dateMS = _date.millisecondsSinceEpoch;
+    int dateInSecondsSinceEpoch = (dateMS / 1000).round();
+
+    int TODMinSinceMidnight = _TODHeadache.hour * 60 + _TODHeadache.minute;
+
+    bool isPartial = _ispartial ?? false;
+    bool isFull = _isfull?? false;
+
+    int Partial = isPartial ? 1 : 0;
+    int Full =  isFull ? 1 : 0;
+
+    // If it would have been null convert to 0 / epoch instead -> signifiying that the value is nulled
+    DateTime medDateTime = _MedicineDate ?? DateTime.fromMillisecondsSinceEpoch(0);
+    int medicineDateMS = medDateTime.millisecondsSinceEpoch;
+
+    // Whether TODMEDMinSinceMidnight is valid depends on medicineDateMS
+    TimeOfDay TODMED =  _TODMedicine ?? TimeOfDay(hour: 0, minute: 0);
+    int TODMEDMinSinceMidnight = TODMED.hour * 60 + TODMED.minute;
+
+    var ms = (new DateTime.now()).millisecondsSinceEpoch;
+    int nowInSecondsSinceEpoch = (ms / 1000).round();
+
+    // print(dateMS);
+    // print(TODMinSinceMidnight);
+    //
+    // print(_intensityLevel);
+    //
+    // print(_symptomList);
+    //
+    // // List<dynamic> result = [_medicine,_ispartial,_isfull,_MedicineDate,_TODMedicine];
+    // print(_medicineName);
+    // print(_ispartial);
+    // print(_isfull);
+    // print(_MedicineDate);
+    // print(_TODMedicine);
+
+    print(userid);
+    await HeadacheFormDBHelper.instance.add(
+        HeadacheFormInput(
+            userid:userid,
+            TS:nowInSecondsSinceEpoch,
+            dateInSecondsSinceEpoch:dateInSecondsSinceEpoch,
+            TODMinSinceMidnight:TODMinSinceMidnight,
+            intensityLevel:_intensityLevel,
+            medicineName:_medicineName,
+            Partial: Partial,
+            Full: Full,
+            medicineDateMS: medicineDateMS,
+            TODMEDMinSinceMidnight: TODMEDMinSinceMidnight)
+    );
+
+
+    // HeadacheFormDBHelper.instance.fetchTableData();
+    // HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserId("2");
+    HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserId("2");
   }
+
 
   void _navigateToNextScreen(BuildContext context,int pageIdx) async {
     final result = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => pages[pageIdx]));
