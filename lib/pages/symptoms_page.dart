@@ -235,6 +235,14 @@ class _SymptomFormState extends State<SymptomFormMenu> {
                                   child: ElevatedButton(
                                       onPressed: () {
                                         // Confirm... Need to pass value back to the headache form
+                                        // 1. Prepare String array to pass back to headache form:
+                                        List<String> result = [];
+                                        for (int i = 0; i < _controllers.length; i++){
+                                          result.add(_controllers[i].text);
+                                        }
+
+                                        // 2. Pass value back
+                                        Navigator.of(context).pop(result);
                                       },
                                       child: Text("Confirm",
                                         style: TextStyle(

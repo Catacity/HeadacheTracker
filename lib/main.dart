@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'pages/Home_page.dart';
+import 'pages/Home_page.dart';
 import 'pages/login_page.dart';
 import 'package:toast/toast.dart';
 
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: login_page(),
+      home: MyHomePage(),
       );
   }
 }

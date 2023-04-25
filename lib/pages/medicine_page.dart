@@ -536,6 +536,12 @@ class _MedicineFormState extends State<MedicineFormMenu> {
                             child: ElevatedButton(
                                 onPressed: () {
                                   // Confirm... Need to pass value back to the headache form
+                                  setState(() {
+                                    _medicine = _medicineTextController.text;
+                                  });
+                                  List<dynamic> result = [_medicine,_ispartial,_isfull,_MedicineDate,_TODMedicine];
+
+                                  Navigator.of(context).pop(result);
                                 },
                                 child: Text("Confirm",
                                   style: TextStyle(

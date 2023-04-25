@@ -20,17 +20,57 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
   var intensityRange = ['Mild','Moderate','Strong','Intense'];
   var pages = [
     SymptomFormMenu(),
-    MedicineFormMenu()];
+    MedicineFormMenu()
+  ];
+  // 0: Mild, 1: Moderate, 2: Strong, 3: Intense
   int _intensityLevel = 0;
+
+  // Symptom page
+  List<String>? _symptomList;
+
+  // Medicine page
+  String? _medicineName;
+  bool? _ispartial;
+  bool? _isfull;
+  DateTime? _MedicineDate;
+  TimeOfDay? _TODMedicine;
+
 
   void _submitHeadacheForm() {
     // Form submission.
-    // You can access the values of the form inputs using the _sleepQuality,
-    // _hours, _minutes, and _image variables.
+    print(_date);
+    print(_TODHeadache);
+    print(_intensityLevel);
+    print(_symptomList);
+    print(_medicineName);
+    print(_ispartial);
+    print(_isfull);
+    print(_MedicineDate);
+    print(_TODMedicine);
   }
 
-  void _navigateToNextScreen(BuildContext context,int pageIdx) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => pages[pageIdx]));
+  void _navigateToNextScreen(BuildContext context,int pageIdx) async {
+    final result = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => pages[pageIdx]));
+
+    if (pageIdx == 0){
+      // Received input from Symptom form:
+      setState(() {
+        _symptomList = result;
+      });
+    }
+    else{
+      // Received input from Headache form:
+      // Output Structure: [_medicine,_ispartial,_isfull,_MedicineDate,_TODMedicine]
+      List<dynamic> resultList = result;
+
+      setState(() {
+        _medicineName = resultList[0];
+        _ispartial = resultList[1];
+        _isfull = resultList[2];
+        _MedicineDate = resultList[3];
+        _TODMedicine = resultList[4];
+      });
+    }
   }
 
   @override
@@ -454,6 +494,7 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
                           child: ElevatedButton(
                               onPressed: () {
                                 // Confirm...
+                                _submitHeadacheForm();
                               },
                               child: Text("Confirm",
                                 style: TextStyle(
@@ -473,7 +514,7 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
                           // padding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                           child: ElevatedButton(
                               onPressed: () {
-                                // Confirm...
+                                // Cancel...
                               },
                               child: Text("Cancel",
                                 style: TextStyle(

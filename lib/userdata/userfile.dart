@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:fluttertest/pages/login_page.dart';
 import 'package:fluttertest/pages/signup_page.dart';
-import 'package:fluttertest/pages/userprofile_info.dart';
+// import 'package:fluttertest/pages/userprofile_info.dart';
 import 'package:fluttertest/databasehandler/databaseconnect.dart';
 class userfile {
   String user_id = "user_id";
