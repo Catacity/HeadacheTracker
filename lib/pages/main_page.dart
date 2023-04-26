@@ -76,7 +76,7 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
     // print(_MedicineDate);
     // print(_TODMedicine);
 
-    print(userid);
+    // print(userid);
     await HeadacheFormDBHelper.instance.add(
         HeadacheFormInput(
             userid:userid,
@@ -92,10 +92,30 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
     );
 
 
-    // HeadacheFormDBHelper.instance.fetchTableData();
+    List<dynamic>result = await HeadacheFormDBHelper.instance.fetchTableData();
+
+    int entryID = result[0]['headacheEntryid'];
     // HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserId("2");
-    HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserId("2");
+    // HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserId("2");
+    List<String> Symptoms = _symptomList ?? [];
+    if(Symptoms.length > 0){
+      for (int i = 0; i < Symptoms.length ; i++){
+        await SymptomDBHelper.instance.add(
+            HeadacheFormSymptom(
+                headacheEntryid: entryID,
+                TS:nowInSecondsSinceEpoch,
+                symptom:Symptoms[i],
+            )
+        );
+      }
+    }
+
+    // SymptomDBHelper.instance.fetchTableData();
+    // SymptomDBHelper.instance.getEntries(29);
+
   }
+
+
 
 
   void _navigateToNextScreen(BuildContext context,int pageIdx) async {

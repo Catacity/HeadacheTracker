@@ -66,9 +66,9 @@ class HeadacheFormDBHelper{
   HeadacheFormDBHelper._privateConstructor();
   static final HeadacheFormDBHelper instance = HeadacheFormDBHelper._privateConstructor();
 
-  static Database? _DailyFormDB;
+  static Database? _HeadacheDB;
   // Init DB if _DailyFormDB is null
-  Future<Database> get database async => _DailyFormDB ??= await _initDatabase();
+  Future<Database> get database async => _HeadacheDB ??= await _initDatabase();
 
   Future<Database> _initDatabase() async{
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
@@ -115,7 +115,10 @@ class HeadacheFormDBHelper{
 
   fetchTableData() async{
     Database db = await instance.database;
-    final result = await db.query('HeadacheForm');
+    final result = await db.query(
+      'HeadacheForm',
+      orderBy: 'TS DESC'
+    );
 
     // print(result);
     return result;
@@ -129,7 +132,7 @@ class HeadacheFormDBHelper{
       whereArgs: [userId],
     );
 
-    // print(result);
+    print(result);
     return result;
   }
 
@@ -156,6 +159,104 @@ class HeadacheFormDBHelper{
     Database db = await instance.database;
 
     return await db.insert('HeadacheForm',headacheFormInput.toMap());
+  }
+
+}
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+// MV ATTRIBUTE:
+class HeadacheFormSymptom {
+// Primary key:
+  final int headacheEntryid; // Foreign key
+  final int TS;               // Foreign key
+  final String symptom;
+
+  HeadacheFormSymptom({required this.headacheEntryid, required this.TS, required this.symptom});
+
+  factory HeadacheFormSymptom.fromMap(Map<String, dynamic> json) => HeadacheFormSymptom(
+    headacheEntryid: json['headacheEntryid'],
+    TS: json['TS'],
+    symptom: json['symptom'],
+  );
+
+  Map<String,dynamic> toMap(){
+    return{
+      'headacheEntryid': headacheEntryid,
+      'TS':TS,
+      'symptom':symptom,
+    };
+  }
+}
+
+class SymptomDBHelper{
+  SymptomDBHelper._privateConstructor();
+  static final SymptomDBHelper instance = SymptomDBHelper._privateConstructor();
+
+  static Database? _SymptomDB;
+  // Init DB if _DailyFormDB is null
+  Future<Database> get database async => _SymptomDB ??= await _initDatabase();
+
+  Future<Database> _initDatabase() async{
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path,'HeadacheFormSymptoms.db');
+
+    return await openDatabase(
+      path,
+      version:1,
+      onCreate: _onCreate,
+    );
+  }
+  // Create Table
+  Future _onCreate(Database db, int version) async {
+    await db.execute(
+        '''
+        CREATE TABLE HeadacheFormSymptoms(
+          headacheEntryid INTEGER NOT NULL,
+          TS INT NOT NULL,
+          symptom TEXT,
+          PRIMARY KEY (headacheEntryid, TS, symptom),
+          FOREIGN KEY (headacheEntryid) REFERENCES HeadacheForm(headacheEntryid),
+          FOREIGN KEY (TS) REFERENCES HeadacheForm(TS)
+        )
+      '''
+    );
+
+    // FOREIGN KEY (userid) REFERENCES User(id)
+  }
+
+
+  Future dropTable(Database db, int version) async {
+    await db.execute(
+        '''
+      Drop TABLE HeadacheFormSymptoms
+      '''
+    );
+  }
+
+  fetchTableData() async{
+    Database db = await instance.database;
+    final result = await db.query('HeadacheFormSymptoms');
+
+    // print(result);
+    return result;
+  }
+
+  Future<List<Map<String, dynamic>>> getEntries(int headacheEntryid) async {
+    Database db = await instance.database;
+    var result = await db.query(
+      'HeadacheFormSymptoms',
+      where: 'headacheEntryid = ?',
+      whereArgs: [headacheEntryid],
+    );
+
+    // print(result);
+    return result;
+  }
+
+  Future<int> add(HeadacheFormSymptom headacheFormSymptom) async{
+    Database db = await instance.database;
+
+    return await db.insert('HeadacheFormSymptoms',headacheFormSymptom.toMap());
   }
 
 }
