@@ -135,7 +135,7 @@ class HeadacheFormDBHelper{
       whereArgs: [userId],
     );
 
-    print(result);
+    // print(result);
     return result;
   }
 
@@ -175,7 +175,7 @@ class HeadacheFormDBHelper{
     );
 
     if (result.isNotEmpty) {
-      print(result.first);
+      // print(result.first);
       return result.first;
     }
 
@@ -264,7 +264,7 @@ class SymptomDBHelper{
     Database db = await instance.database;
     final result = await db.query('HeadacheFormSymptoms');
 
-    print(result);
+    // print(result);
     return result;
   }
 
@@ -276,7 +276,7 @@ class SymptomDBHelper{
       whereArgs: [headacheEntryid],
     );
 
-    print(result);
+    // print(result);
     return result;
   }
 

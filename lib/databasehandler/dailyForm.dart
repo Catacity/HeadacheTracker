@@ -72,6 +72,7 @@ class DailyFormDBHelper{
 
   static Database? _DailyFormDB;
   // Init DB if _DailyFormDB is null
+
   Future<Database> get database async => _DailyFormDB ??= await _initDatabase();
 
   Future<Database> _initDatabase() async{
@@ -119,6 +120,7 @@ class DailyFormDBHelper{
   }
 
   fetchTableData() async{
+
     Database db = await instance.database;
     final result = await db.query('DailyForm');
 
@@ -147,6 +149,30 @@ class DailyFormDBHelper{
       whereArgs: [userId],
       orderBy: 'TS DESC',
       limit: 1,
+    );
+
+    if (result.isNotEmpty) {
+      // print(result.first);
+      return result.first;
+    }
+
+    return null;
+  }
+
+  Future<Map<String, dynamic>?> fetchLatestDailyFormByUserIdAndDate(String userId, DateTime date) async {
+    final Database db = await instance.database;
+    var date_ts = date.millisecondsSinceEpoch;
+    int TS_DATE = (date_ts / 1000).round();
+
+    var result = await db.rawQuery(
+      '''
+      SELECT * FROM DailyForm
+      WHERE userid = ?
+      AND TS_DATE = ?
+      ORDER BY TS DESC
+      LIMIT 1;
+      ''',
+      [userId, TS_DATE],
     );
 
     if (result.isNotEmpty) {

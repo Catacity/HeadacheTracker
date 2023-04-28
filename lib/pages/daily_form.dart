@@ -67,6 +67,10 @@ class _DailyFormState extends State<DailyForm> {
     int TS_DATE = (today_ts / 1000).round();
 
     print(userid);
+    // var testDate = DateTime(2023,4,30);
+    // today_ts = testDate.millisecondsSinceEpoch;
+    // TS_DATE = (today_ts / 1000).round();
+
     await DailyFormDBHelper.instance.add(
         DailyFormInput(
           userid:userid,
@@ -87,8 +91,7 @@ class _DailyFormState extends State<DailyForm> {
       _textController.clear();
     });
 
-    // DailyFormDBHelper.instance.fetchTableData();
-
+    // DailyFormDBHelper.instance.fetchLatestDailyFormByUserIdAndDate("3",todayDate);
     // DailyFormDBHelper.instance.fetchLatestDailyFormByUserId("3");
   }
 

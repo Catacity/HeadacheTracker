@@ -82,9 +82,9 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
     // HeadacheFormDBHelper.instance.rmDatabase();
 
     // For testing
-    DateTime testDate = DateTime(2023,4,30);
-    today_ts = testDate.millisecondsSinceEpoch;
-    TS_DATE = (today_ts / 1000).round();
+    // DateTime testDate = DateTime(2023,4,30);
+    // today_ts = testDate.millisecondsSinceEpoch;
+    // TS_DATE = (today_ts / 1000).round();
 
     await HeadacheFormDBHelper.instance.add(
         HeadacheFormInput(
