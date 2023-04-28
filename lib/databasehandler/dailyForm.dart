@@ -8,12 +8,15 @@ import 'package:path/path.dart';
 // For getApplicationDocumentsDirectory()
 import 'package:path_provider/path_provider.dart';
 
+DateTime now = DateTime.now();
+DateTime todayDate = DateTime(now.year,now.month,now.day);
+
 class DailyFormInput {
 // Primary key:
   final int? dailyEntryid;
   final String? userid; //userid; //C_UserId from table userinfo      // Foreign key
   final int TS;             // Seconds since epoch of DateTime.now();
-
+  final int TS_DATE;
   // Other fields:
   final double sleepQuality;
   final int sleepHours;
@@ -27,13 +30,13 @@ class DailyFormInput {
   // What is the format of this supposed to be???? I'll keep it to String for now
   final String exerciseDuration;
 
-  DailyFormInput({this.dailyEntryid, this.userid, required this.TS, required this.sleepQuality, required this.sleepHours, required this.sleepMinutes, required this.dailyDescription, required this.stressLV, required this.didExercise, required this.exerciseType, required this.exerciseDuration});
+  DailyFormInput({this.dailyEntryid, this.userid, required this.TS, required this.TS_DATE, required this.sleepQuality, required this.sleepHours, required this.sleepMinutes, required this.dailyDescription, required this.stressLV, required this.didExercise, required this.exerciseType, required this.exerciseDuration});
 
   factory DailyFormInput.fromMap(Map<String, dynamic> json) => DailyFormInput(
     dailyEntryid: json['dailyEntryid'],
     userid: json['userid'],
     TS: json['TS'],
-
+    TS_DATE: json['TS_DATE'],
     sleepQuality: json['sleepquality'],
     sleepHours: json['sleepHours'],
     sleepMinutes: json['sleepMinutes'],
@@ -50,6 +53,7 @@ class DailyFormInput {
       'dailyEntryid': dailyEntryid,
       'userid':userid,
       'TS':TS,
+      'TS_DATE':TS_DATE,
       'sleepQuality':sleepQuality,
       'sleepHours':sleepHours,
       'sleepMinutes':sleepMinutes,
@@ -87,7 +91,8 @@ class DailyFormDBHelper{
         CREATE TABLE DailyForm(
           dailyEntryid INTEGER PRIMARY KEY AUTOINCREMENT,
           userid TEXT NOT NULL,     
-          TS INT NOT NULL,         
+          TS INT NOT NULL, 
+          TS_DATE INT NOT NULL,
           sleepQuality DOUBLE,
           sleepHours INTEGER,
           sleepMinutes INTEGER,

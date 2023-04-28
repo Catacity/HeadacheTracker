@@ -63,11 +63,15 @@ class _DailyFormState extends State<DailyForm> {
     var ms = (new DateTime.now()).millisecondsSinceEpoch;
     int nowInSecondsSinceEpoch = (ms / 1000).round();
 
+    var today_ts = todayDate.millisecondsSinceEpoch;
+    int TS_DATE = (today_ts / 1000).round();
+
     print(userid);
     await DailyFormDBHelper.instance.add(
         DailyFormInput(
           userid:userid,
           TS:nowInSecondsSinceEpoch,
+          TS_DATE: TS_DATE,
           sleepQuality:_sleepQuality,
           sleepHours:_hours,
           sleepMinutes:_minutes,

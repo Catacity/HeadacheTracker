@@ -36,7 +36,7 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
   TimeOfDay? _TODMedicine;
 
   // For testing
-  String? userid = "2";
+  String? userid = "3";
 
   void _submitHeadacheForm() async {
     // Form submission
@@ -62,6 +62,8 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
     var ms = (new DateTime.now()).millisecondsSinceEpoch;
     int nowInSecondsSinceEpoch = (ms / 1000).round();
 
+    var today_ts = todayDate.millisecondsSinceEpoch;
+    int TS_DATE = (today_ts / 1000).round();
     // print(dateMS);
     // print(TODMinSinceMidnight);
     //
@@ -77,10 +79,18 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
     // print(_TODMedicine);
 
     // print(userid);
+    // HeadacheFormDBHelper.instance.rmDatabase();
+
+    // For testing
+    DateTime testDate = DateTime(2023,4,30);
+    today_ts = testDate.millisecondsSinceEpoch;
+    TS_DATE = (today_ts / 1000).round();
+
     await HeadacheFormDBHelper.instance.add(
         HeadacheFormInput(
             userid:userid,
             TS:nowInSecondsSinceEpoch,
+            TS_DATE: TS_DATE,
             dateInSecondsSinceEpoch:dateInSecondsSinceEpoch,
             TODMinSinceMidnight:TODMinSinceMidnight,
             intensityLevel:_intensityLevel,
@@ -91,9 +101,7 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
             TODMEDMinSinceMidnight: TODMEDMinSinceMidnight)
     );
 
-
     List<dynamic>result = await HeadacheFormDBHelper.instance.fetchTableData();
-
     int entryID = result[0]['headacheEntryid'];
     // HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserId("2");
     // HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserId("2");
@@ -110,8 +118,11 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
       }
     }
 
-    // SymptomDBHelper.instance.fetchTableData();
+    // HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserId("3");
+    // HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserIdAndDate("3", todayDate);
+    // HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserIdAndDate("3", testDate);
     // SymptomDBHelper.instance.getEntries(29);
+
 
   }
 

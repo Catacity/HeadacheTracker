@@ -13,7 +13,7 @@ class HeadacheFormInput {
   final int? headacheEntryid;
   final String? userid; //userid;  Foreign key
   final int TS;             // Seconds since epoch of DateTime.now();
-
+  final int TS_DATE;      // Date for equality comparisons
   // Other fields:
   final int dateInSecondsSinceEpoch;
   final int TODMinSinceMidnight;
@@ -28,13 +28,13 @@ class HeadacheFormInput {
   final int medicineDateMS;
   final int TODMEDMinSinceMidnight;
 
-  HeadacheFormInput({this.headacheEntryid, this.userid, required this.TS, required this.dateInSecondsSinceEpoch, required this.TODMinSinceMidnight, required this.intensityLevel, required this.medicineName, required this.Partial, required this.Full, required this.medicineDateMS, required this.TODMEDMinSinceMidnight});
+  HeadacheFormInput({this.headacheEntryid, this.userid, required this.TS, required this.TS_DATE, required this.dateInSecondsSinceEpoch, required this.TODMinSinceMidnight, required this.intensityLevel, required this.medicineName, required this.Partial, required this.Full, required this.medicineDateMS, required this.TODMEDMinSinceMidnight});
 
   factory HeadacheFormInput.fromMap(Map<String, dynamic> json) => HeadacheFormInput(
     headacheEntryid: json['headacheEntryid'],
     userid: json['userid'],
     TS: json['TS'],
-
+    TS_DATE: json['TS_DATE'],
     dateInSecondsSinceEpoch: json['dateInSecondsSinceEpoch'],
     TODMinSinceMidnight: json['TODMinSinceMidnight'],
     intensityLevel: json['intensityLevel'],
@@ -50,6 +50,7 @@ class HeadacheFormInput {
       'headacheEntryid': headacheEntryid,
       'userid':userid,
       'TS':TS,
+      'TS_DATE':TS_DATE,
       'dateInSecondsSinceEpoch':dateInSecondsSinceEpoch,
       'TODMinSinceMidnight':TODMinSinceMidnight,
       'intensityLevel':intensityLevel,
@@ -80,14 +81,16 @@ class HeadacheFormDBHelper{
       onCreate: _onCreate,
     );
   }
+
   // Create Table
   Future _onCreate(Database db, int version) async {
     await db.execute(
         '''
-        CREATE TABLE HeadacheForm(
+        CREATE TABLE IF NOT EXISTS HeadacheForm(
           headacheEntryid INTEGER PRIMARY KEY AUTOINCREMENT,
           userid TEXT NOT NULL,     
-          TS INT NOT NULL,  
+          TS INT NOT NULL, 
+          TS_DATE INT NOT NULL, 
           dateInSecondsSinceEpoch INT,
           TODMinSinceMidnight INT,
           intensityLevel INT,
@@ -149,6 +152,30 @@ class HeadacheFormDBHelper{
 
     if (result.isNotEmpty) {
       // print(result.first);
+      return result.first;
+    }
+
+    return null;
+  }
+
+  Future<Map<String, dynamic>?> fetchLatestHeadacheFormByUserIdAndDate(String userId, DateTime date) async {
+    final Database db = await instance.database;
+    var date_ts = date.millisecondsSinceEpoch;
+    int TS_DATE = (date_ts / 1000).round();
+
+    var result = await db.rawQuery(
+      '''
+      SELECT * FROM HeadacheForm
+      WHERE userid = ?
+      AND TS_DATE = ?
+      ORDER BY TS DESC
+      LIMIT 1;
+      ''',
+      [userId, TS_DATE],
+    );
+
+    if (result.isNotEmpty) {
+      print(result.first);
       return result.first;
     }
 
@@ -237,7 +264,7 @@ class SymptomDBHelper{
     Database db = await instance.database;
     final result = await db.query('HeadacheFormSymptoms');
 
-    // print(result);
+    print(result);
     return result;
   }
 
@@ -249,7 +276,7 @@ class SymptomDBHelper{
       whereArgs: [headacheEntryid],
     );
 
-    // print(result);
+    print(result);
     return result;
   }
 
