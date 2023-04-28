@@ -183,6 +183,24 @@ class DailyFormDBHelper{
     return null;
   }
 
+  Future<List<Map<String, dynamic>>> fetchValidEntriesForUser(String userId) async {
+    final db = await database;
+    final results = await db.rawQuery(
+      '''
+        SELECT *
+        FROM DailyForm AS DF1
+        INNER JOIN (
+          SELECT TS_DATE, MAX(TS) AS maxTS FROM DailyForm
+          WHERE userid = ?
+          GROUP BY TS_DATE
+        ) AS DF2 ON DF1.TS_DATE = DF2.TS_DATE AND DF1.TS = DF2.maxTS
+        WHERE DF1.userid = ?
+      ''',
+      [userId, userId]);
+    // print(results);
+    return results;
+  }
+
   Future<int> add(DailyFormInput dailyFormInput) async{
     Database db = await instance.database;
 

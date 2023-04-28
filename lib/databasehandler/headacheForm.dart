@@ -182,6 +182,24 @@ class HeadacheFormDBHelper{
     return null;
   }
 
+  Future<List<Map<String, dynamic>>> fetchValidEntriesForUser(String userId) async {
+    final db = await database;
+    final results = await db.rawQuery(
+        '''
+        SELECT *
+        FROM HeadacheForm AS HF1
+        INNER JOIN (
+          SELECT TS_DATE, MAX(TS) AS maxTS FROM HeadacheForm
+          WHERE userid = ?
+          GROUP BY TS_DATE
+        ) AS HF2 ON HF1.TS_DATE = HF2.TS_DATE AND HF1.TS = HF2.maxTS
+        WHERE HF1.userid = ?
+      ''',
+        [userId, userId]);
+    // print(results);
+    return results;
+  }
+
   Future<int> add(HeadacheFormInput headacheFormInput) async{
     Database db = await instance.database;
 

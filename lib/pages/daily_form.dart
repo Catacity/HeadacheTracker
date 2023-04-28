@@ -38,7 +38,7 @@ class _DailyFormState extends State<DailyForm> {
   String _exerciseDuration = '';
 
   // For testing
-  String? userid = "3";
+  String? userid = "2";
 
   void _submitForm() async{
     // This is where you would handle the form submission.
@@ -91,7 +91,8 @@ class _DailyFormState extends State<DailyForm> {
       _textController.clear();
     });
 
-    // DailyFormDBHelper.instance.fetchLatestDailyFormByUserIdAndDate("3",todayDate);
+    // DailyFormDBHelper.instance.fetchValidEntriesForUser("2");
+    // DailyFormDBHelper.instance.fetchValidEntriesForUser("3");
     // DailyFormDBHelper.instance.fetchLatestDailyFormByUserId("3");
   }
 
