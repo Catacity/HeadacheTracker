@@ -3,10 +3,11 @@ import 'package:fluttertest/pages/daily_form.dart';
 import 'package:fluttertest/pages/calendar.dart';
 import 'package:fluttertest/pages/main_page.dart';
 import 'package:fluttertest/pages/login_page.dart';
-import 'package:fluttertest/components/helptofill.dart';
+import 'package:fluttertest/components/button.dart';
 import 'package:fluttertest/components/text_field.dart';
-import 'package:fluttertest/databasehandler/databaseconnect.dart';
-// import 'package:fluttertest/pages/userprofile_info.dart';
+import 'package:fluttertest/components/square_tile.dart';
+import 'Trends.dart';
+
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -17,13 +18,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   List pages = [
-    // userprofile_info(),
     DailyForm(),
     HeadacheFormMenu(),
-    Calendar()
+    HeadTrackerPage(),
+    Trends()
   ];
-  List<Color> colors1 = [Colors.white, Colors.black, Colors.white];
-  List<Color> colors2 = [Colors.lightBlueAccent, Colors.white, Colors.lightBlueAccent];
+  List<Color> colors1 = [Colors.white, Colors.black, Colors.white, Colors.white];
+  List<Color> colors2 = [Colors.lightBlueAccent, Colors.white, Colors.lightBlueAccent, Colors.lightBlueAccent];
 
 
   int currentIndex = 0;
@@ -91,16 +92,12 @@ class _MyHomePageState extends State<MyHomePage> {
         currentIndex: currentIndex,
         backgroundColor: colors2[currentIndex],
         items: <BottomNavigationBarItem>[
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.check_box_outlined),
-          //   label: 'Profile',
-          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.check_box_outlined),
             label: 'Daily Form',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book_outlined),
+            icon: Icon(Icons.headset_mic_outlined),
             label: 'Headache',
           ),
           BottomNavigationBarItem(
@@ -108,9 +105,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
             label: 'Calendar',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.auto_graph,
+            ),
+            label: 'Trends',
+          ),
         ],
         selectedItemColor: colors1[currentIndex],
         onTap: OnTap,
+        type: BottomNavigationBarType.fixed,
       ),
 
 
