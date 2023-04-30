@@ -65,65 +65,66 @@ class _login_pageState extends State<login_page> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Login with Signup'),
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Container(
-          // child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              loginsignupheader('Login'),
-              text_field(
-                controller: _conUserId,
-                icon: Icons.person,
-                hintName: 'User ID',
-                isObscureText: true,),
-              SizedBox(height: 10.0),
-              text_field(
-                controller: _conPassword,
-                icon: Icons.lock,
-                hintName: 'Password',
-                isObscureText: true,
-              ),
-              Container(
-                margin: EdgeInsets.all(30.0),
-                width: double.infinity,
-                child: TextButton(
-                  child: Text(
-                    'Login',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: login,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-              ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Do not have account? '),
-                    TextButton(
-                      //textColor: Colors.blue,
-                      child: Text('Signup'),
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => signup_page()));
-                      },
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    return Container();
+    // Scaffold(
+    //   appBar: AppBar(
+    //     title: Text('Login with Signup'),
+    //   ),
+    //   body: SingleChildScrollView(
+    //     scrollDirection: Axis.vertical,
+    //     child: Container(
+    //       // child: Center(
+    //       child: Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         children: [
+    //           loginsignupheader('Login'),
+    //           text_field(
+    //             controller: _conUserId,
+    //             icon: Icons.person,
+    //             hintName: 'User ID',
+    //             isObscureText: true,),
+    //           SizedBox(height: 10.0),
+    //           text_field(
+    //             controller: _conPassword,
+    //             icon: Icons.lock,
+    //             hintName: 'Password',
+    //             isObscureText: true,
+    //           ),
+    //           Container(
+    //             margin: EdgeInsets.all(30.0),
+    //             width: double.infinity,
+    //             child: TextButton(
+    //               child: Text(
+    //                 'Login',
+    //                 style: TextStyle(color: Colors.white),
+    //               ),
+    //               onPressed: login,
+    //             ),
+    //             decoration: BoxDecoration(
+    //               color: Colors.blue,
+    //               borderRadius: BorderRadius.circular(30.0),
+    //             ),
+    //           ),
+    //           Container(
+    //             child: Row(
+    //               mainAxisAlignment: MainAxisAlignment.center,
+    //               children: [
+    //                 Text('Do not have account? '),
+    //                 TextButton(
+    //                   //textColor: Colors.blue,
+    //                   child: Text('Signup'),
+    //                   onPressed: () {
+    //                     Navigator.push(context,
+    //                         MaterialPageRoute(builder: (_) => signup_page()));
+    //                   },
+    //                 )
+    //               ],
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }

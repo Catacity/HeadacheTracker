@@ -64,94 +64,95 @@ class _signup_pageState extends State<signup_page> {
 
     @override
     Widget build(BuildContext context) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Login with Signup'),
-        ),
-        body: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Container(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    loginsignupheader('Signup'),
-                    text_field(
-                        controller: _conUserId,
-                        icon: Icons.person,
-                        hintName: 'User ID',),
-                    SizedBox(height: 10.0),
-                    text_field(
-                        controller: _conUserName,
-                        icon: Icons.person_outline,
-                        inputType: TextInputType.name,
-                        hintName: 'User Name',),
-                    SizedBox(height: 5.0),
-                    text_field(
-                        controller: _conEmail,
-                        icon: Icons.email,
-                        inputType: TextInputType.emailAddress,
-                        hintName: 'Email',),
-                    SizedBox(height: 5.0),
-                    text_field(
-                      controller: _conPassword,
-                      icon: Icons.lock,
-                      hintName: 'Password',
-                      isObscureText: true,
-                    ),
-                    SizedBox(height: 5.0),
-                    text_field(
-                      controller: _conCPassword,
-                      icon: Icons.lock,
-                      hintName: 'Confirm Password',
-                      isObscureText: true,
-                    ),
-                    SizedBox(height: 5.0),
-                    text_field(
-                        controller: _conUserGender,
-                        icon: Icons.person,
-                        inputType: TextInputType.name,
-                        hintName: 'Gender'),
-
-                    Container(
-                      margin: EdgeInsets.all(30.0),
-                      width: double.infinity,
-                      child: TextButton(
-                        child: Text(
-                          'Signup',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: signup(),
-                      ), //FlatButton
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                    ),
-                    Container(
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                          Text('Have account Already? '),
-                      TextButton(
-                        //textColor: Colors.blue,
-                        child: Text('Sign In'),
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) => login_page()));
-                        },
-                      )
-                          ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
+      return Container();
+      // Scaffold(
+      //   appBar: AppBar(
+      //     title: Text('Login with Signup'),
+      //   ),
+      //   body: Form(
+      //     key: _formKey,
+      //     child: SingleChildScrollView(
+      //       scrollDirection: Axis.vertical,
+      //       child: Container(
+      //         child: Center(
+      //           child: Column(
+      //             mainAxisAlignment: MainAxisAlignment.center,
+      //             children: [
+      //               loginsignupheader('Signup'),
+      //               text_field(
+      //                   controller: _conUserId,
+      //                   icon: Icons.person,
+      //                   hintName: 'User ID',),
+      //               SizedBox(height: 10.0),
+      //               text_field(
+      //                   controller: _conUserName,
+      //                   icon: Icons.person_outline,
+      //                   inputType: TextInputType.name,
+      //                   hintName: 'User Name',),
+      //               SizedBox(height: 5.0),
+      //               text_field(
+      //                   controller: _conEmail,
+      //                   icon: Icons.email,
+      //                   inputType: TextInputType.emailAddress,
+      //                   hintName: 'Email',),
+      //               SizedBox(height: 5.0),
+      //               text_field(
+      //                 controller: _conPassword,
+      //                 icon: Icons.lock,
+      //                 hintName: 'Password',
+      //                 isObscureText: true,
+      //               ),
+      //               SizedBox(height: 5.0),
+      //               text_field(
+      //                 controller: _conCPassword,
+      //                 icon: Icons.lock,
+      //                 hintName: 'Confirm Password',
+      //                 isObscureText: true,
+      //               ),
+      //               SizedBox(height: 5.0),
+      //               text_field(
+      //                   controller: _conUserGender,
+      //                   icon: Icons.person,
+      //                   inputType: TextInputType.name,
+      //                   hintName: 'Gender'),
+      //
+      //               Container(
+      //                 margin: EdgeInsets.all(30.0),
+      //                 width: double.infinity,
+      //                 child: TextButton(
+      //                   child: Text(
+      //                     'Signup',
+      //                     style: TextStyle(color: Colors.white),
+      //                   ),
+      //                   onPressed: signup(),
+      //                 ), //FlatButton
+      //                 decoration: BoxDecoration(
+      //                   color: Colors.blue,
+      //                   borderRadius: BorderRadius.circular(30.0),
+      //                 ),
+      //               ),
+      //               Container(
+      //                 child: Row(
+      //                     mainAxisAlignment: MainAxisAlignment.center,
+      //                     children: [
+      //                     Text('Have account Already? '),
+      //                 TextButton(
+      //                   //textColor: Colors.blue,
+      //                   child: Text('Sign In'),
+      //                   onPressed: () {
+      //                     Navigator.push(context,
+      //                         MaterialPageRoute(builder: (_) => login_page()));
+      //                   },
+      //                 )
+      //                     ],
+      //                 ),
+      //               ),
+      //             ],
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      // );
     }
   }

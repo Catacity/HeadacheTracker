@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertest/pages/daily_form.dart';
 import 'package:fluttertest/pages/calendar.dart';
 import 'package:fluttertest/pages/main_page.dart';
-import 'package:fluttertest/pages/login_page.dart';
+// import 'package:fluttertest/pages/login_page.dart';
 import 'package:fluttertest/components/button.dart';
 import 'package:fluttertest/components/text_field.dart';
 import 'package:fluttertest/components/square_tile.dart';

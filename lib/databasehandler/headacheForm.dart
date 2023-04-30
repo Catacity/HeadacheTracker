@@ -159,23 +159,24 @@ class HeadacheFormDBHelper{
   }
 
   Future<Map<String, dynamic>?> fetchLatestHeadacheFormByUserIdAndDate(String userId, DateTime date) async {
+    // Given userid and date selected, return entry with the latest filled in TS
     final Database db = await instance.database;
     var date_ts = date.millisecondsSinceEpoch;
-    int TS_DATE = (date_ts / 1000).round();
+    int DATE = (date_ts / 1000).round();
 
     var result = await db.rawQuery(
       '''
       SELECT * FROM HeadacheForm
       WHERE userid = ?
-      AND TS_DATE = ?
+      AND dateInSecondsSinceEpoch = ?
       ORDER BY TS DESC
-      LIMIT 1;
+      LIMIT 1
       ''',
-      [userId, TS_DATE],
+      [userId, DATE],
     );
 
     if (result.isNotEmpty) {
-      // print(result.first);
+      print(result.first);
       return result.first;
     }
 
@@ -185,17 +186,18 @@ class HeadacheFormDBHelper{
   Future<List<Map<String, dynamic>>> fetchValidEntriesForUser(String userId) async {
     final db = await database;
     final results = await db.rawQuery(
-        '''
-        SELECT *
-        FROM HeadacheForm AS HF1
-        INNER JOIN (
-          SELECT TS_DATE, MAX(TS) AS maxTS FROM HeadacheForm
+      '''
+        SELECT * FROM HeadacheForm
+        WHERE userid = ?
+        AND TS IN (
+          SELECT MAX(TS)
+          FROM HeadacheForm
           WHERE userid = ?
-          GROUP BY TS_DATE
-        ) AS HF2 ON HF1.TS_DATE = HF2.TS_DATE AND HF1.TS = HF2.maxTS
-        WHERE HF1.userid = ?
+          GROUP BY dateInSecondsSinceEpoch
+        )
+        ORDER BY TS DESC
       ''',
-        [userId, userId]);
+      [userId, userId]);
     // print(results);
     return results;
   }

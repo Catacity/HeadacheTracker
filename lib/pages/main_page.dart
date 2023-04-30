@@ -36,7 +36,7 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
   TimeOfDay? _TODMedicine;
 
   // For testing
-  String? userid = "2";
+  String? userid = "3";
 
   void _submitHeadacheForm() async {
     // Form submission
@@ -82,9 +82,9 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
     // HeadacheFormDBHelper.instance.rmDatabase();
 
     // For testing
-    // DateTime testDate = DateTime(2023,4,28);
-    // today_ts = testDate.millisecondsSinceEpoch;
-    // TS_DATE = (today_ts / 1000).round();
+    DateTime testDate = DateTime(2023,4,26);
+    today_ts = testDate.millisecondsSinceEpoch;
+    TS_DATE = (today_ts / 1000).round();
 
     await HeadacheFormDBHelper.instance.add(
         HeadacheFormInput(
@@ -118,8 +118,9 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
     }
 
     // HeadacheFormDBHelper.instance.fetchValidEntriesForUser("2");
+    // HeadacheFormDBHelper.instance.fetchValidEntriesForUser("3");
     // HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserId("3");
-    // HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserIdAndDate("3", todayDate);
+    HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserIdAndDate("3", todayDate);
     // HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserIdAndDate("3", testDate);
     // SymptomDBHelper.instance.getEntries(29);
 
