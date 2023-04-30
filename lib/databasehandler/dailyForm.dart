@@ -122,9 +122,10 @@ class DailyFormDBHelper{
   fetchTableData() async{
 
     Database db = await instance.database;
-    final result = await db.query('DailyForm');
+    final result = await db.query('DailyForm',
+        orderBy:'dailyEntryid DESC');
 
-    // print(result);
+    print(result);
     return result;
   }
 

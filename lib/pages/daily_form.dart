@@ -38,7 +38,7 @@ class _DailyFormState extends State<DailyForm> {
   String _exerciseDuration = '';
 
   // For testing
-  String? userid = "2";
+  String? userid = "3";
 
   void _submitForm() async{
     // This is where you would handle the form submission.
@@ -46,19 +46,19 @@ class _DailyFormState extends State<DailyForm> {
     // _hours, _minutes, and _image variables.
 
     // For sleep quality, should we round it at the end?
-    print("Sleep quality:" +_sleepQuality.toString());
-
-    print("Sleep hours:" +_hours.toString());
-    print("Sleep minutes:" +_minutes.toString());
-    // How do we store the img?
-
-    print("WDYD:" +_textController.text);
-    print("Stress lv:" +_stressLevel.toString());
-    print("did exercise:" + _didExercise.toString());
-    print("exercise type:" + _exerciseType);
-
-    // What is the input format expected for this?
-    print("exercise dura:" + _exerciseDuration);
+    // print("Sleep quality:" +_sleepQuality.toString());
+    //
+    // print("Sleep hours:" +_hours.toString());
+    // print("Sleep minutes:" +_minutes.toString());
+    // // How do we store the img?
+    //
+    // print("WDYD:" +_textController.text);
+    // print("Stress lv:" +_stressLevel.toString());
+    // print("did exercise:" + _didExercise.toString());
+    // print("exercise type:" + _exerciseType);
+    //
+    // // What is the input format expected for this?
+    // print("exercise dura:" + _exerciseDuration);
 
     var ms = (new DateTime.now()).millisecondsSinceEpoch;
     int nowInSecondsSinceEpoch = (ms / 1000).round();
@@ -66,10 +66,11 @@ class _DailyFormState extends State<DailyForm> {
     var today_ts = todayDate.millisecondsSinceEpoch;
     int TS_DATE = (today_ts / 1000).round();
 
-    print(userid);
-    // var testDate = DateTime(2023,4,30);
-    // today_ts = testDate.millisecondsSinceEpoch;
-    // TS_DATE = (today_ts / 1000).round();
+    // For testing
+    // print(userid);
+    // var testDate = DateTime(2023,5,2);
+    // nowInSecondsSinceEpoch = (testDate.millisecondsSinceEpoch/1000).round() + 4;
+    // TS_DATE = (testDate.millisecondsSinceEpoch/1000).round();
 
     await DailyFormDBHelper.instance.add(
         DailyFormInput(
