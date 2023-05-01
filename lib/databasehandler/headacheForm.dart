@@ -123,7 +123,7 @@ class HeadacheFormDBHelper{
       orderBy: 'TS DESC'
     );
 
-    // print(result);
+    print(result);
     return result;
   }
 
@@ -282,9 +282,11 @@ class SymptomDBHelper{
 
   fetchTableData() async{
     Database db = await instance.database;
-    final result = await db.query('HeadacheFormSymptoms');
+    final result = await db.query('HeadacheFormSymptoms',
+        orderBy: 'headacheEntryid DESC',
+        );
 
-    // print(result);
+    print(result);
     return result;
   }
 

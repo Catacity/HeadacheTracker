@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:fluttertest/databasehandler/dailyForm.dart';
+import 'package:fluttertest/pages/calendar_detailed_page_headache.dart';
 
 Future<Map<String, dynamic>>fetchData(String userID,DateTime date) async {
   // Fetch relevant record from DB
@@ -47,8 +48,17 @@ class _DetailedInfoPageState extends State<DetailedInfoPage> {
   }
 
   _gotoHeadacheFormInfo() {
-    //
-
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            HeadacheInfoPage.async(
+              key: ValueKey(widget.date),
+              date: widget.date,
+              userID : widget.userID,
+            ),
+      ),
+    );
   }
 
   AppBar buildAppBar() {
