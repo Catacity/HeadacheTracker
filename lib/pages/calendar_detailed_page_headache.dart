@@ -194,7 +194,7 @@ class _HeadacheInfoPageState extends State<HeadacheInfoPage> {
     String intensityText = intensityRange[intensityLV];
 
     // Todo: Other symptoms
-
+    String symptomText = "";
     var medText = medicineTexts(headacheQueryResult);
 
     return Scaffold(
@@ -205,210 +205,238 @@ class _HeadacheInfoPageState extends State<HeadacheInfoPage> {
             border: Border.all(color: Colors.white),
             borderRadius: BorderRadius.circular(10.0),
           ),
-          child: Expanded(child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                    Expanded(
-                      flex: 1,
-                      child:Text(
-                        'Headache form record for ${DateFormat('MMMM d, y',).format(
-                            widget.date)}',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: 'handrawn',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.deepOrange,
-                        ),
-                      ),),
-                    Expanded(
-                      flex: 1,
-                      child:
-                      Row(
-                        children: [
-                          Text(
-                            'Period of the day: ',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            '${WhenHappenedText}',
-                            style: TextStyle(
-                              fontSize: 25,
-                            ),
-                          ),
-                        ],
+          child: Flex(
+            direction: Axis.vertical,
+            children: [Flexible(
+              fit: FlexFit.tight,
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child:Text(
+                      'Headache form record for ${DateFormat('MMMM d, y',).format(
+                          widget.date)}',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'handrawn',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepOrange,
                       ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Row(
-                        children: [
-                          Text(
-                            'Intensity: ${intensityText}',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    ),),
+                  Expanded(
+                    flex: 1,
+                    child:
+                    Row(
+                      children: [
+                        Text(
+                          'Period of the day: ',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                      ),),
-                    Expanded(
-                      flex: 2,
-                      child:Row(
-                        children: [
-                          Text(
-                            'Other Symptoms: Todo!',
-                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          '${WhenHappenedText}',
+                          style: TextStyle(
+                            fontSize: 25,
                           ),
-                          // Expanded(
-                          //   child: Column(
-                          //     crossAxisAlignment: CrossAxisAlignment.start,
-                          //     children: [
-                          //       GestureDetector(
-                          //         onTap: getImage,
-                          //         child: Container(
-                          //           height: 50,
-                          //           width: 50,
-                          //           decoration: BoxDecoration(
-                          //             color: Colors.grey.shade300,
-                          //             border: Border.all(color: Colors.black),
-                          //           ),
-                          //           child: _image == null
-                          //               ? Icon(Icons.image)
-                          //               : Image.file(_image!),
-                          //         ),
-                          //       ),
-                          //       SizedBox(height: 10),
-                          //
-                          //     ],
-                          //   ),
-                          // ),
-                        ],
-                      ),),
-                    Expanded(
-                      flex: 1,
-                      child: Row(
-                        children: [
-                          Text('Medicine information:',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                        ],
-                      ),),
-                    Expanded(
-                      flex : 3,
-                      child:
-                      Row(
-                          children: [
-                            if (medText[0] != "")
-                              Column(
-                                children: [
-                                  Row(
-                                    children:[
-                                      Text('  Medicine name: ',
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text('${medText[0]}',
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10),
-                                  Row(
-                                    children:[
-                                      Text('    Pain Relief: ',
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text('${medText[1]}',
-                                        style: TextStyle(
-                                          fontSize: 22,
-                                        ),
-                                      ),
-                                      SizedBox(width: 10),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10),
-                                  Row(
-                                    children:[
-                                      Text('      Date consumed: ',
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text('${medText[2]}',
-                                        style: TextStyle(
-                                          fontSize: 22,
-                                        ),
-                                      ),
-                                      SizedBox(width: 10),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10),
-                                  Row(
-                                    children:[
-                                      Text('      Time consumed: ',
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text('${medText[3]}',
-                                        style: TextStyle(
-                                          fontSize: 22,
-                                        ),
-                                      ),
-                                      SizedBox(width: 10),
-                                    ],
-                                  ),
-                                ],
-                              )
-                            else
-                              Column(
-                                children: [
-                                  Text('  You did not use any medicine!',
-                                    style: TextStyle(
-                                      fontSize: 22,
-                                    ),),
-                                  SizedBox(width: 10),
-                                ],
-                              )
-                          ]
-                      )
-                      ,
-                    ),
-                    ElevatedButton(
-                  onPressed: _returnToDailyFormInfo,
-                  child: Text('Daily Form Information',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                  ],
-                ),
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      children: [
+                        Text(
+                          'Intensity: ${intensityText}',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),),
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      children: [
+                        Text(
+                          'Other Symptoms: ',
+                          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                        ),
+                        if (symptomText.length > 0)
+                          ElevatedButton(
+                            child: Text("Show Symptoms"),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("Symptoms recorded"),
+                                    content: Text(symptomText),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text("Close"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        if (symptomText.length == 0)
+                          Text(
+                            "None!",
+                            style: TextStyle(fontSize: 24),
+                          ),
+                      ],
+                    ),
+
+                    ),
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      children: [
+                        Text('Medicine information:',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                      ],
+                    ),),
+                  Expanded(
+                    flex : 3,
+                    child:
+                    Row(
+                        children: [
+                          if (medText[0] != "")
+                            Column(
+                              children: [
+                                Row(
+                                  children:[
+                                    Text('  Medicine name: ',
+                                      style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text('${medText[0]}',
+                                      style: TextStyle(
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children:[
+                                    Text('    Pain Relief: ',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text('${medText[1]}',
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children:[
+                                    Text('      Date consumed: ',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text('${medText[2]}',
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children:[
+                                    Text('      Time consumed: ',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text('${medText[3]}',
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                  ],
+                                ),
+                              ],
+                            )
+                          else
+                            Column(
+                              children: [
+                                Text('  You did not use any medicine!',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                  ),),
+                                SizedBox(width: 10),
+                              ],
+                            )
+                        ]
+                    )
+                    ,
+                  ),
+                  ElevatedButton(
+                    onPressed: _returnToDailyFormInfo,
+                    child: Text('Daily Form Information',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
+            ),
+            ],
           )
         )
     );
   }
 }
 
+// showDialog(
+// context: context,
+// builder: (context) => AlertDialog(
+// title: Text("Headache Levels"),
+// content: Text(
+// "Mild means .. \n\nModerate means .. \n\nStrong means .. \n\nIntense means ..",
+// ),
+// actions: [
+// TextButton(
+// child: Text("OK"),
+// onPressed: () => Navigator.pop(context),
+// ),
+// ],
+// )
+// );
