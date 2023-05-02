@@ -137,6 +137,14 @@ class _DailyFormState extends State<DailyForm> {
                     },
                   ),
                 ),
+                SizedBox(width: 10),
+                Text(
+                  _sleepQuality.round().toString(),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  )
+                ),
               ],
             ),
             SizedBox(height: 20),
