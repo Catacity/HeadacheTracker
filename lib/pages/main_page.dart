@@ -64,22 +64,6 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
 
     var today_ts = todayDate.millisecondsSinceEpoch;
     int TS_DATE = (today_ts / 1000).round();
-    // print(dateMS);
-    // print(TODMinSinceMidnight);
-    //
-    // print(_intensityLevel);
-    //
-    // print(_symptomList);
-    //
-    // // List<dynamic> result = [_medicine,_ispartial,_isfull,_MedicineDate,_TODMedicine];
-    // print(_medicineName);
-    // print(_ispartial);
-    // print(_isfull);
-    // print(_MedicineDate);
-    // print(_TODMedicine);
-
-    // print(userid);
-    // HeadacheFormDBHelper.instance.rmDatabase();
 
     // For testing
     DateTime testDate = DateTime(2023,4,26);
@@ -120,7 +104,8 @@ class _HeadacheFormState extends State<HeadacheFormMenu> {
     // HeadacheFormDBHelper.instance.fetchValidEntriesForUser("2");
     // HeadacheFormDBHelper.instance.fetchValidEntriesForUser("3");
     // HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserId("3");
-    HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserIdAndDate("3", todayDate);
+    // Map<String, dynamic>? test= await HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserIdAndDate("3", todayDate);
+    // print(test);
     // HeadacheFormDBHelper.instance.fetchLatestHeadacheFormByUserIdAndDate("3", testDate);
     // SymptomDBHelper.instance.getEntries(29);
 

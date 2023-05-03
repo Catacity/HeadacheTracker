@@ -6,7 +6,46 @@ import 'package:fluttertest/pages/calendar_detailed_page.dart';
 // For testing
 String userID = "3";
 
+Future<Map<DateTime, int>> fetchHeadacheIntensity(String userId) async{
+  List<Map<String, dynamic>>? resultList = await HeadacheFormDBHelper.instance.fetchValidEntriesForUser(userId);
+  print(resultList);
+
+  Map<DateTime, int> mappedIntensity = {};
+  if (resultList != null){
+    if (resultList.length > 0){
+      for (int i = 0 ; i < resultList.length ; i++){
+        DateTime date = DateTime.fromMillisecondsSinceEpoch(resultList[i]['TS_DATE'] * 1000);
+        date = DateTime(date.year,date.month,date.day);
+        mappedIntensity[date] = int.parse(resultList[i]['intensityLevel']);
+      }
+    }
+  }
+
+  // Dummy
+  // Map<DateTime, int> mappedIntensity = {
+  //   DateTime(2023, 4, 1): 1,
+  //   DateTime(2023, 4, 2): 2,
+  //   DateTime(2023, 4, 3): 3,
+  //   DateTime(2023, 4, 4): 1,
+  //   DateTime(2023, 4, 5): 3,
+  // };
+
+  return mappedIntensity;
+}
+
 class HeadTrackerPage extends StatefulWidget {
+  HeadTrackerPage({required Key key, required this.userID, required this.headacheQueryResult}) : super(key: key);
+
+  factory HeadTrackerPage.async() {
+    Future<Map<DateTime, int>?> queryResult = fetchHeadacheIntensity(userID);
+    DateTime key = DateTime.now();
+    return HeadTrackerPage(
+      key: ValueKey(key),
+      userID:userID,
+      headacheQueryResult: queryResult,
+    );
+  }
+
   @override
   _HeadTrackerPageState createState() => _HeadTrackerPageState();
 }
@@ -43,9 +82,10 @@ class _HeadTrackerPageState extends State<HeadTrackerPage> {
                 colorMode: ColorMode.color,
                 datasets: intensityData,
                 colorsets: {
-                  1: Colors.yellow,
-                  2: Colors.orange,
-                  3: Colors.redAccent.shade700,
+                  1: Colors.lime,
+                  2: Colors.yellow,
+                  3: Colors.orange,
+                  4: Colors.redAccent.shade700
                 },
                 onClick: (value) {
                   setState(() {

@@ -8,7 +8,8 @@ import 'package:fluttertest/components/text_field.dart';
 import 'package:fluttertest/components/square_tile.dart';
 import 'Trends.dart';
 
-
+// For testing:
+String userID = "3";
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -20,7 +21,8 @@ class _MyHomePageState extends State<MyHomePage> {
   List pages = [
     DailyForm(),
     HeadacheFormMenu(),
-    HeadTrackerPage(),
+    // HeadTrackerPage.async(userID:userID),
+    HeadTrackerPage.async(),
     Trends()
   ];
   List<Color> colors1 = [Colors.white, Colors.black, Colors.white, Colors.white];
