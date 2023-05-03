@@ -238,63 +238,66 @@ class _HeadacheTrendsPageState extends State<HeadacheTrendsPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Headache Trends')),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 10),
-            Align(
-             alignment: Alignment.centerLeft,
-            child:
-            Text("Select the year:",
-            textAlign: TextAlign.left ,
-            style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold ) )),
-            SizedBox(height: 5),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: DropdownButton<int>(
-                value: selectedYear,
-                items: availableYears.map<DropdownMenuItem<int>>(
-                      (int value) {
-                    return DropdownMenuItem<int>(
-                      value: value,
-                      child: Text(value.toString()),
-                    );
+        child: Padding(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            children: [
+              SizedBox(height: 10),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child:
+                  Text("Select the year:",
+                      textAlign: TextAlign.left ,
+                      style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold ) )),
+              SizedBox(height: 5),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: DropdownButton<int>(
+                  value: selectedYear,
+                  items: availableYears.map<DropdownMenuItem<int>>(
+                        (int value) {
+                      return DropdownMenuItem<int>(
+                        value: value,
+                        child: Text(value.toString()),
+                      );
+                    },
+                  ).toList(),
+                  onChanged: (int? newValue) {
+                    setState(() {
+                      selectedYear = newValue!;
+                    });
                   },
-                ).toList(),
-                onChanged: (int? newValue) {
-                  setState(() {
-                    selectedYear = newValue!;
-                  });
-                },
+                ),
               ),
-            ),
 
-            SizedBox(height: 5),
-            Container(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.5,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              child: SfCartesianChart(
-                title: ChartTitle(
-                    text: 'Count of headache records and intensity',
-                  textStyle: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.bold ,
-                    fontSize: 16,
-                  )),
-                legend: Legend(isVisible: true),
-                primaryXAxis: CategoryAxis(title: AxisTitle(text: 'Months')),
-                primaryYAxis: NumericAxis(
-                    title: AxisTitle(text: 'Count of records')),
-                series: _buildStackedColumnSeries(selectedYear),
+              SizedBox(height: 5),
+              Container(
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.5,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                child: SfCartesianChart(
+                  title: ChartTitle(
+                      text: 'Count of headache records and intensity',
+                      textStyle: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.bold ,
+                        fontSize: 16,
+                      )),
+                  legend: Legend(isVisible: true),
+                  primaryXAxis: CategoryAxis(title: AxisTitle(text: 'Months')),
+                  primaryYAxis: NumericAxis(
+                      title: AxisTitle(text: 'Count of records')),
+                  series: _buildStackedColumnSeries(selectedYear),
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        )
       ),
     );
   }
