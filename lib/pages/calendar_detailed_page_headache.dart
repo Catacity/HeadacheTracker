@@ -22,8 +22,7 @@ Future<List<Map<String, dynamic>>> fetchSymptomData(Future<int> id) async {
 
   if (entryID != -1){
     List<Map<String, dynamic>> Qresult = await SymptomDBHelper.instance.getEntries(entryID);
-    print(Qresult);
-    List<Map<String, dynamic>> Result = Qresult ?? [];
+    Result = Qresult ?? [];
   }
 
   return Result;
@@ -193,9 +192,19 @@ class _HeadacheInfoPageState extends State<HeadacheInfoPage> {
     int intensityLV = headacheQueryResult?['intensityLevel'] ?? 4;
     String intensityText = intensityRange[intensityLV];
 
-    // Todo: Other symptoms
+    // Other symptoms
     String symptomText = "";
-    var medText = medicineTexts(headacheQueryResult);
+    List<Map<String, dynamic>> SymptomList = headacheSymptomResult ?? [];
+    print(SymptomList);
+    var medText;
+
+    setState(() {
+      for (int i = 0; i < SymptomList.length; i++) {
+        symptomText += "Symptom " + (i+1).toString() + " :${SymptomList[i]['symptom']}\n\n";
+      }
+
+      medText = medicineTexts(headacheQueryResult);
+    });
 
     return Scaffold(
         appBar: buildAppBar(),
@@ -317,93 +326,98 @@ class _HeadacheInfoPageState extends State<HeadacheInfoPage> {
                     ),),
                   Expanded(
                     flex : 3,
-                    child:
-                    Row(
-                        children: [
-                          if (medText[0] != "")
-                            Column(
-                              children: [
-                                Row(
-                                  children:[
-                                    Text('  Medicine name: ',
-                                      style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                          children: [
+                            if (medText[0] != "")
+                              Column(
+                                children: [
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child:Row(
+                                      children:[
+                                        Text('  Medicine name: ',
+                                          style: TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text('${medText[0]}',
+                                          style: TextStyle(
+                                            fontSize: 25,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Text('${medText[0]}',
-                                      style: TextStyle(
-                                        fontSize: 25,
+                                  ),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    children:[
+                                      Text('    Pain Relief: ',
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Row(
-                                  children:[
-                                    Text('    Pain Relief: ',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
+                                      Text('${medText[1]}',
+                                        style: TextStyle(
+                                          fontSize: 22,
+                                        ),
                                       ),
-                                    ),
-                                    Text('${medText[1]}',
-                                      style: TextStyle(
-                                        fontSize: 22,
+                                      SizedBox(width: 10),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    children:[
+                                      Text('      Date consumed: ',
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 10),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Row(
-                                  children:[
-                                    Text('      Date consumed: ',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
+                                      Text('${medText[2]}',
+                                        style: TextStyle(
+                                          fontSize: 22,
+                                        ),
                                       ),
-                                    ),
-                                    Text('${medText[2]}',
-                                      style: TextStyle(
-                                        fontSize: 22,
+                                      SizedBox(width: 10),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    children:[
+                                      Text('      Time consumed: ',
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 10),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Row(
-                                  children:[
-                                    Text('      Time consumed: ',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
+                                      Text('${medText[3]}',
+                                        style: TextStyle(
+                                          fontSize: 22,
+                                        ),
                                       ),
-                                    ),
-                                    Text('${medText[3]}',
-                                      style: TextStyle(
-                                        fontSize: 22,
-                                      ),
-                                    ),
-                                    SizedBox(width: 10),
-                                  ],
-                                ),
-                              ],
-                            )
-                          else
-                            Column(
-                              children: [
-                                Text('  You did not use any medicine!',
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                  ),),
-                                SizedBox(width: 10),
-                              ],
-                            )
-                        ]
+                                      SizedBox(width: 10),
+                                    ],
+                                  ),
+                                ],
+                              )
+                            else
+                              Column(
+                                children: [
+                                  Text('  You did not use any medicine!',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                    ),),
+                                  SizedBox(width: 10),
+                                ],
+                              )
+                          ]
+                      ),
                     )
-                    ,
+
                   ),
                   ElevatedButton(
                     onPressed: _returnToDailyFormInfo,

@@ -132,6 +132,9 @@ class _DetailedInfoPageState extends State<DetailedInfoPage> {
     String sleepMinText = intToStr(sleepMin);
 
     String dailyDesc = result?['dailyDescription'] ?? "";
+    if (dailyDesc == ""){
+      dailyDesc = "/";
+    }
 
     int stressLv = result?['stressLV'] ?? -1;
     String stressLvText = intToStr(stressLv);

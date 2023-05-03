@@ -123,7 +123,7 @@ class HeadacheFormDBHelper{
       orderBy: 'TS DESC'
     );
 
-    print(result);
+    // print(result);
     return result;
   }
 
@@ -176,7 +176,7 @@ class HeadacheFormDBHelper{
     );
 
     if (result.isNotEmpty) {
-      print(result.first);
+      // print(result.first);
       return result.first;
     }
 
