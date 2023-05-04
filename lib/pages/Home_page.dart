@@ -17,12 +17,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
+  DateTime now = DateTime.now();
 
   List pages = [
     DailyForm(),
     HeadacheFormMenu(),
-    HeadTrackerPage.async(userID:userID),
-    // HeadTrackerPage.async(),
+    HeadTrackerPage.async(key: ValueKey(DateTime.now()),userID:userID),
     Trends()
   ];
   List<Color> colors1 = [Colors.white, Colors.black, Colors.white, Colors.white];
@@ -33,6 +33,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void OnTap(int index) {
     setState(() {
       currentIndex= index;
+      // So that page 3 can update dynamically
+      now = DateTime.now();
     });
   }
 
@@ -89,7 +91,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: currentIndex == 0
           ? SingleChildScrollView(child: pages[currentIndex])
+          : currentIndex == 2
+          ? HeadTrackerPage.async(key: ValueKey(now),userID:userID)
           : pages[currentIndex],
+
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         backgroundColor: colors2[currentIndex],

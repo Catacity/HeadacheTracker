@@ -37,7 +37,7 @@ class HeadTrackerPage extends StatefulWidget {
 
   HeadTrackerPage({required Key key, required this.userID, required this.headacheQueryResult}) : super(key: key);
 
-  factory HeadTrackerPage.async({required String userID}) {
+  factory HeadTrackerPage.async({required key, required String userID}) {
     Future<Map<DateTime, int>?> queryResult = fetchHeadacheIntensity(userID);
     DateTime key = DateTime.now();
     return HeadTrackerPage(
