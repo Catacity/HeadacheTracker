@@ -2,46 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:fluttertest/pages/calendar_detailed_page.dart';
+import 'package:fluttertest/databasehandler/headacheForm.dart';
 
-// For testing
-String userID = "3";
+// For testing:
+// String userID = "3";
 
 Future<Map<DateTime, int>> fetchHeadacheIntensity(String userId) async{
   List<Map<String, dynamic>>? resultList = await HeadacheFormDBHelper.instance.fetchValidEntriesForUser(userId);
-  print(resultList);
+  // print(resultList);
 
   Map<DateTime, int> mappedIntensity = {};
   if (resultList != null){
     if (resultList.length > 0){
+      // print(resultList.length);
       for (int i = 0 ; i < resultList.length ; i++){
-        DateTime date = DateTime.fromMillisecondsSinceEpoch(resultList[i]['TS_DATE'] * 1000);
+        DateTime date = DateTime.fromMillisecondsSinceEpoch(resultList[i]['dateInSecondsSinceEpoch'] * 1000);
+
+        // print("TS: ${resultList[i]['dateInSecondsSinceEpoch']}");
+        // print("intensity: ${resultList[i]['intensityLevel']}");
+
         date = DateTime(date.year,date.month,date.day);
-        mappedIntensity[date] = int.parse(resultList[i]['intensityLevel']);
+        mappedIntensity[date] = resultList[i]['intensityLevel'];
       }
     }
   }
 
-  // Dummy
-  // Map<DateTime, int> mappedIntensity = {
-  //   DateTime(2023, 4, 1): 1,
-  //   DateTime(2023, 4, 2): 2,
-  //   DateTime(2023, 4, 3): 3,
-  //   DateTime(2023, 4, 4): 1,
-  //   DateTime(2023, 4, 5): 3,
-  // };
-
+  // print(mappedIntensity);
   return mappedIntensity;
 }
 
 class HeadTrackerPage extends StatefulWidget {
+  final Future<Map<DateTime, int>?> headacheQueryResult;
+  final String userID;
+
   HeadTrackerPage({required Key key, required this.userID, required this.headacheQueryResult}) : super(key: key);
 
-  factory HeadTrackerPage.async() {
+  factory HeadTrackerPage.async({required String userID}) {
     Future<Map<DateTime, int>?> queryResult = fetchHeadacheIntensity(userID);
     DateTime key = DateTime.now();
     return HeadTrackerPage(
       key: ValueKey(key),
-      userID:userID,
+      userID: userID,
       headacheQueryResult: queryResult,
     );
   }
@@ -54,16 +55,24 @@ class _HeadTrackerPageState extends State<HeadTrackerPage> {
   DateTime? selectedDate;
 
   // Sample data for the heatmap, replace with your actual data
-  Map<DateTime, int> intensityData = {
-    DateTime(2023, 4, 1): 1,
-    DateTime(2023, 4, 2): 2,
-    DateTime(2023, 4, 3): 3,
-    DateTime(2023, 4, 4): 1,
-    DateTime(2023, 4, 5): 3,
-  };
+  // Map<DateTime, int>? intensityData;
+  Map<DateTime, int>? intensityData;
+
+  @override
+  void initState() {
+    super.initState();
+    // deFuture the furure lists/ maps
+    widget.headacheQueryResult.then((qResult) {
+      setState(() {
+        intensityData = qResult ?? {};
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    // print(intensityData);
+    Map<DateTime, int> intensityMapping = intensityData ?? {};
     return SingleChildScrollView(
       child:Container(
         child: Center(
@@ -80,12 +89,12 @@ class _HeadTrackerPageState extends State<HeadTrackerPage> {
               ),
               HeatMapCalendar(
                 colorMode: ColorMode.color,
-                datasets: intensityData,
+                datasets: intensityMapping,
                 colorsets: {
-                  1: Colors.lime,
-                  2: Colors.yellow,
-                  3: Colors.orange,
-                  4: Colors.redAccent.shade700
+                  0: Colors.lime,
+                  1: Colors.yellow,
+                  2: Colors.orange,
+                  3: Colors.redAccent.shade700
                 },
                 onClick: (value) {
                   setState(() {
@@ -116,16 +125,17 @@ class _HeadTrackerPageState extends State<HeadTrackerPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            buildLegendItem("Weak headache", Colors.yellow),
+                            buildLegendItem("Mild headache", Colors.lime),
                             SizedBox(width: 10),
-                            buildLegendItem("Moderate headache", Colors.orange),
+                            buildLegendItem("Moderate headache", Colors.yellow),
                           ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            buildLegendItem("Strong headache", Colors.redAccent
-                                .shade700),
+                            buildLegendItem("Strong headache", Colors.orange),
+                            SizedBox(width: 10),
+                            buildLegendItem("Severe headache", Colors.redAccent.shade700),
                           ],
                         ),
                       ],
@@ -156,7 +166,7 @@ class _HeadTrackerPageState extends State<HeadTrackerPage> {
                           DetailedInfoPage.async(
                             key: ValueKey(selectedDate!),
                             date: selectedDate!,
-                            userID : userID,
+                            userID : widget.userID,
                           ),
                     ),
                   );

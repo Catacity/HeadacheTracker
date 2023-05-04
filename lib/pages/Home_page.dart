@@ -21,8 +21,8 @@ class _MyHomePageState extends State<MyHomePage> {
   List pages = [
     DailyForm(),
     HeadacheFormMenu(),
-    // HeadTrackerPage.async(userID:userID),
-    HeadTrackerPage.async(),
+    HeadTrackerPage.async(userID:userID),
+    // HeadTrackerPage.async(),
     Trends()
   ];
   List<Color> colors1 = [Colors.white, Colors.black, Colors.white, Colors.white];

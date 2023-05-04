@@ -195,7 +195,7 @@ class _HeadacheInfoPageState extends State<HeadacheInfoPage> {
     // Other symptoms
     String symptomText = "";
     List<Map<String, dynamic>> SymptomList = headacheSymptomResult ?? [];
-    print(SymptomList);
+    // print(SymptomList);
     var medText;
 
     setState(() {
