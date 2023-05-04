@@ -35,8 +35,8 @@ class _DailyFormState extends State<DailyForm> {
   // So pre fill-in for _didExercise == null
   String? _didExercise;
   String _exerciseType = '';
-  String _exerciseDuration = '';
-
+  int _exerciseH = 0;
+  int _exerciseMin = 0;
   // For testing
   String? userid = "3";
 
@@ -59,6 +59,8 @@ class _DailyFormState extends State<DailyForm> {
     //
     // // What is the input format expected for this?
     // print("exercise dura:" + _exerciseDuration);
+    int exerciseDurationMin = _exerciseH * 60 + _exerciseMin;
+    // print(exerciseDurationMin);
 
     var ms = (new DateTime.now()).millisecondsSinceEpoch;
     int nowInSecondsSinceEpoch = (ms / 1000).round();
@@ -84,7 +86,7 @@ class _DailyFormState extends State<DailyForm> {
           stressLV: _stressLevel,
           didExercise: _didExercise,
           exerciseType: _exerciseType,
-          exerciseDuration: _exerciseDuration)
+          exerciseDurationMin: exerciseDurationMin)
     );
 
     // Clear text
@@ -154,6 +156,7 @@ class _DailyFormState extends State<DailyForm> {
                   'Sleep duration:',
                   style: TextStyle(fontSize: 16),
                 ),
+                SizedBox(width: 16.0),
                 SizedBox(
                   width: 70.0,
                   child: TextField(
@@ -288,7 +291,8 @@ class _DailyFormState extends State<DailyForm> {
                       _didExercise = value;
                       if (value == 'No') {
                         _exerciseType = '';
-                        _exerciseDuration = '';
+                        _exerciseH = 0;
+                        _exerciseMin = 0;
                       }
                     });
                   },
@@ -303,7 +307,8 @@ class _DailyFormState extends State<DailyForm> {
                       _didExercise = value;
                       if (value == 'No') {
                         _exerciseType = '';
-                        _exerciseDuration = '';
+                        _exerciseH = 0;
+                        _exerciseMin = 0;
                       }
                     });
                   },
@@ -322,14 +327,44 @@ class _DailyFormState extends State<DailyForm> {
                       _exerciseType = value;
                     },
                   ),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Exercise duration',
-                    ),
-                    onChanged: (value) {
-                      _exerciseDuration = value;
-                    },
-                  ),
+                  SizedBox(height: 16.0),
+                  Row(
+                    children:[
+                      Text('Exercise duration:'),
+                      SizedBox(width: 16.0),
+                      SizedBox(
+                        width: 70.0,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) {
+                            setState(() {
+                              _exerciseH = int.tryParse(value) ?? 0;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            labelText: 'H',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 16.0),
+                      SizedBox(
+                        width: 70.0,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) {
+                            setState(() {
+                              _exerciseMin = int.tryParse(value) ?? 0;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            labelText: 'M',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                      ),
+                    ]
+                  )
                 ],
               ),
 

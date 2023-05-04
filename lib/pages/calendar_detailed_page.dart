@@ -141,7 +141,13 @@ class _DetailedInfoPageState extends State<DetailedInfoPage> {
 
     String didExercise = result?['didExercise'] ?? "NA";
     String exerciseType = result?['exerciseType'] ?? "";
-    String exerciseDuration = result?['exerciseDuration'] ?? "";
+    int exerciseDurationMin = result?['exerciseDurationMin'] ?? 0;
+
+    Map<String, dynamic> test = result ?? {};
+
+    int exerciseH = exerciseDurationMin ~/ 60;
+    int exerciseMin = exerciseDurationMin % 60;
+    String exerciseDuration = exerciseH.toString() + " H " + exerciseMin.toString() + " M";
 
     return Scaffold(
         appBar: buildAppBar(),

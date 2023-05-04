@@ -27,10 +27,9 @@ class DailyFormInput {
   final String? didExercise;
   final String exerciseType;
 
-  // What is the format of this supposed to be???? I'll keep it to String for now
-  final String exerciseDuration;
+  final int exerciseDurationMin;
 
-  DailyFormInput({this.dailyEntryid, this.userid, required this.TS, required this.TS_DATE, required this.sleepQuality, required this.sleepHours, required this.sleepMinutes, required this.dailyDescription, required this.stressLV, required this.didExercise, required this.exerciseType, required this.exerciseDuration});
+  DailyFormInput({this.dailyEntryid, this.userid, required this.TS, required this.TS_DATE, required this.sleepQuality, required this.sleepHours, required this.sleepMinutes, required this.dailyDescription, required this.stressLV, required this.didExercise, required this.exerciseType, required this.exerciseDurationMin});
 
   factory DailyFormInput.fromMap(Map<String, dynamic> json) => DailyFormInput(
     dailyEntryid: json['dailyEntryid'],
@@ -45,7 +44,7 @@ class DailyFormInput {
     stressLV: json['stressLV'],
     didExercise: json['didExercise'],
     exerciseType: json['exerciseType'],
-    exerciseDuration: json['exerciseDuration'],
+    exerciseDurationMin: json['exerciseDurationMin'],
   );
 
   Map<String,dynamic> toMap(){
@@ -61,7 +60,7 @@ class DailyFormInput {
       'stressLV': stressLV,
       'didExercise': didExercise,
       'exerciseType': exerciseType,
-      'exerciseDuration': exerciseDuration,
+      'exerciseDurationMin': exerciseDurationMin,
     };
   }
 }
@@ -101,7 +100,7 @@ class DailyFormDBHelper{
           stressLV INT,
           didExercise TEXT,
           exerciseType TEXT,
-          exerciseDuration TEXT,
+          exerciseDurationMin INT,
           UNIQUE(userid, TS)
         )
       '''
@@ -122,10 +121,11 @@ class DailyFormDBHelper{
   fetchTableData() async{
 
     Database db = await instance.database;
+
     final result = await db.query('DailyForm',
         orderBy:'dailyEntryid DESC');
 
-    print(result);
+    // print(result);
     return result;
   }
 
