@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2/build/vega.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0/build/vega-lite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.18.2/build/vega-embed.min.js"></script>
+    <style>
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: black;
+        }
+        .custom-font-size {
+          font-size: 16px; /* Change this value to your desired font size */
+
+        }
+
+    </style>
+</head>
+<body>
+<label class="custom-font-size" for="year-select">Select Year (all graphs):</label>
+<select class="custom-font-size" id="year-select">
+    <!-- options will be dynamically created here -->
+</select>
+<br>
+
+<br/>
+<label for="relief-select">Select partial or full pain relief:</label>
+<select id="relief-select" >
+    <option value="1">Partial</option>
+    <option value="0">Full</option>
+</select>
+
+<div id="chart3"></div>
+<div id="chart4"></div>
+<script type="text/javascript">
+      const data = JSON.parse(`{{data}}`);
+      const availableYears = [...new Set(data.map((d) => d.TS_DATE.substring(0, 4)))];
+
+
+      // dynamically create options in select year based on available years
+      const yearSelect = document.getElementById("year-select");
+      availableYears.forEach((year) => {
+        const option = document.createElement("option");
+        option.text = year;
+        option.value = year;
+        yearSelect.add(option);
+      });
+
+      function updateChart() {
+        const yearSelect = document.getElementById("year-select");
+        const selectedYear = yearSelect.options[yearSelect.selectedIndex].value;
+
+
+        // get selected partial value
+        const partialSelect = document.getElementById("relief-select");
+
+        const selectedPartial = partialSelect.options[partialSelect.selectedIndex].value;
+
+        // filter data based on selected year and partial value
+        const filteredData1 = data.filter((d) => d.TS_DATE.startsWith(selectedYear) && d.Partial == selectedPartial)
+
+        // filter data based on selected year
+        const filteredData = data.filter((d) => d.TS_DATE.startsWith(selectedYear));
+
+        renderChart3(filteredData1);
+        renderChart4(filteredData);
+      }
+
+
+
+     function renderChart3(data) {
+  const spec = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "width": 220,
+      "height": 220,
+      "title": {"text":"Headache intensity and medicine name", "fontSize": 18},
+      "data": {
+        "values": data,
+      },
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "medicineName",
+          "type": "nominal",
+          "title": "Medicine Name",
+        },
+        "y": {
+              "aggregate": "count",
+              "type": "quantitative",
+              "title": "Count of records",
+            },
+            "color": {
+              "field": "intensityLevel",
+              "type": "nominal",
+              "scale": {
+                "domain": [1, 2, 3],
+                "range": ["yellow", "orange", "red"],
+              },
+              "title": "Headache intensity",
+      }
+    }
+  };
+
+
+  vegaEmbed("#chart3", spec);
+}
+
+function renderChart4(data) {
+  const spec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 220,
+    "height": 220,
+    "title": {"text": "How much each medicine helps relieving pain?", "fontSize": 18},
+    "data": {
+      "values": data
+    },
+    "mark": "rect",
+    "encoding": {
+      "x": {
+        "field": "medicineName",
+        "type": "nominal",
+        "title": "Medicine Name"
+      },
+      "y": {
+        "field": "intensityLevel",
+        "type": "ordinal",
+        "title": "Headache intensity"
+      },
+      "color": {
+        "field": "Partial",
+        "type": "nominal",
+        "scale": {
+          "domain": [0, 1],
+          "range": ["green", "orange"]
+        },
+        "legend": {
+          "title": "Pain relief",
+          "labelExpr": "datum.label === '0' ? 'Full' : 'Partial'"
+        }
+      }
+    }
+  };
+
+  vegaEmbed("#chart4", spec);
+}
+
+// Add event listeners for the select elements
+yearSelect.addEventListener("change", updateChart);
+const reliefSelect = document.getElementById("relief-select");
+reliefSelect.addEventListener("change", updateChart);
+
+// Call updateChart initially to render the charts
+updateChart();
+
+
+
+</script>
+</body>
+</html>
+

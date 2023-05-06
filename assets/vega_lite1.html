@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2/build/vega.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0/build/vega-lite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.18.2/build/vega-embed.min.js"></script>
+</head>
+<body>
+<p>Hello</p>
+<label for="year-select">Select Year:</label>
+<select id="year-select" onchange="updateChart()">
+    <!-- options will be dynamically created here -->
+</select>
+<div id="vis"></div>
+<script type="text/javascript">
+  function renderChart(data) {
+    const spec = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": data
+  },
+  "layer": [
+    {
+      "mark": {"type": "rect", "tooltip": true},
+      "encoding": {
+        "x": {"timeUnit": "week", "field": "date", "type": "ordinal", "axis": {"title": "Weekday"}},
+        "y": {"timeUnit": "month", "field": "date", "type": "ordinal", "axis": {"title": "Month"}},
+        "color": {"aggregate": "count", "type": "quantitative", "scale": {"scheme": "redyellowgreen"}},
+      }
+    },
+    {
+      "mark": {"type": "text", "baseline": "middle", "align": "center"},
+      "encoding": {
+        "x": {"timeUnit": "week", "field": "date", "type": "ordinal"},
+        "y": {"timeUnit": "month", "field": "date", "type": "ordinal"},
+        "text": {"aggregate": "count", "type": "quantitative", "format": ".0f"}
+      }
+    }
+  ]
+};
+
+
+    vegaEmbed('#vis', spec);
+  }
+
+
+function updateChart1() {
+  const yearSelect = document.getElementById("year-select");
+  const selectedYear = yearSelect.options[yearSelect.selectedIndex].value;
+
+  // filter data based on selected year
+  const filteredData = data.filter(d => d.date.startsWith(selectedYear));
+
+  // re-render chart with filtered data
+  renderChart(filteredData);
+}
+
+const data = JSON.parse(`{{data}}`);
+const availableYears = [...new Set(data.map(d => d.date.substring(0, 4)))];
+
+// dynamically create options in select year based on available years
+const yearSelect = document.getElementById("year-select");
+availableYears.forEach(year => {
+  const option = document.createElement("option");
+  option.text = year;
+  option.value = year;
+  yearSelect.add(option);
+});
+
+// render chart with initial data
+renderChart(data);
+</script>
+</body>
+</html>

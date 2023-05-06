@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2/build/vega.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0/build/vega-lite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.18.2/build/vega-embed.min.js"></script>
+    <style>
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: black;
+        }
+        .custom-font-size {
+          font-size: 16px; /* Change this value to your desired font size */
+
+        }
+
+    </style>
+</head>
+<body>
+<h1 style="font-size: 24px;">Headache and Intensity</h1>
+<label class="custom-font-size" for="year-select">Select Year (all graphs):</label>
+<select class="custom-font-size" id="year-select">
+    <!-- options will be dynamically created here -->
+</select>
+<br>
+<div id="chart1"></div>
+<div id="chart2"></div>
+<script type="text/javascript">
+      const data = JSON.parse(`{{data}}`);
+      const availableYears = [...new Set(data.map((d) => d.TS_DATE.substring(0, 4)))];
+
+
+      // dynamically create options in select year based on available years
+      const yearSelect = document.getElementById("year-select");
+      availableYears.forEach((year) => {
+        const option = document.createElement("option");
+        option.text = year;
+        option.value = year;
+        yearSelect.add(option);
+      });
+
+      function updateChart() {
+        const yearSelect = document.getElementById("year-select");
+        const selectedYear = yearSelect.options[yearSelect.selectedIndex].value;
+
+        // filter data based on selected year
+        const filteredData = data.filter((d) => d.TS_DATE.startsWith(selectedYear));
+
+        // re-render chart1 with filtered data
+        renderChart1(filteredData);
+
+        // re-render chart2 with filtered data
+        renderChart2(filteredData);
+
+
+      }
+
+
+      function renderChart1(data) {
+        const spec = {
+          "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+          "width": 250,
+          "height": 250,
+          "title": {"text":"Headaches counts and intensity", "fontSize": 18},
+          "data": {
+            "values": data,
+          },
+          "mark": "bar",
+          "encoding": {
+            "x": {
+              "timeUnit": "month",
+              "field": "TS_DATE",
+              "type": "ordinal",
+              "title": "Month of the year",
+            },
+            "y": {
+              "aggregate": "count",
+              "type": "quantitative",
+              "title": "Count of records",
+            },
+            "color": {
+              "field": "intensityLevel",
+              "type": "nominal",
+              "scale": {
+                "domain": [1, 2, 3],
+                "range": ["yellow", "orange", "red"],
+              },
+              "title": "Intensity",
+            },
+          },
+        };
+
+        vegaEmbed("#chart1", spec);
+      }
+
+
+
+ function renderChart2(data) {
+  const spec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 250,
+    "height": 250,
+    "title": {"text":"Headaches per week day in a month", "fontSize": 18},
+    "data": {
+      "values": data,
+    },
+
+        "mark": { "type": "rect" },
+        "encoding": {
+          "x": {
+            "timeUnit": "month",
+            "field": "TS_DATE",
+            "type": "ordinal",
+            "axis": { "title": "Month" },
+          },
+          "y": {
+            "timeUnit": "day",
+            "field": "TS_DATE",
+            "type": "ordinal",
+            "axis": { "title": "Day of the week" },
+          },
+          "color": {
+            "aggregate": "count",
+            "type": "quantitative",
+            "scale": { "scheme": "orangered" },
+          },
+
+      },
+
+  };
+
+  vegaEmbed("#chart2", spec);
+}
+
+
+// Add event listeners for the select elements
+yearSelect.addEventListener("change", updateChart);
+
+
+// Call updateChart initially to render the charts
+updateChart();
+
+
+
+</script>
+</body>
+</html>
+
