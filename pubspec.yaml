@@ -39,6 +39,7 @@ dependencies:
   syncfusion_flutter_maps: ^21.1.41
   flutter_svg: ^0.22.0
   flutter_heat_map: ^1.2.1
+   webview_flutter: ^2.0.14
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -88,6 +89,12 @@ flutter:
   assets:
     - lib/images/
     - assets/headache_data.json
+    - assets/vega_lite.html
+    - assets/vega_lite1.html
+    - assets/vega_lite0.html
+    - assets/vega_lite2.html
+    - assets/vega_lite3.html
+    - assets/vega_lite4.html
 
   # - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
