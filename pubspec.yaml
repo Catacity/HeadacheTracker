@@ -95,6 +95,8 @@ flutter:
     - assets/vega_lite2.html
     - assets/vega_lite3.html
     - assets/vega_lite4.html
+    - assets/vega_lite5.html
+    - assets/vega_lite6.html
 
   # - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
