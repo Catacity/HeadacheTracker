@@ -23,7 +23,7 @@ class _MyHomePageState extends State<MyHomePage> {
     DailyForm(),
     HeadacheFormMenu(),
     HeadTrackerPage.async(key: ValueKey(DateTime.now()),userID:userID),
-    Trends(userID:userID)
+    Trends.async(key: ValueKey(DateTime.now()),userID:userID)
   ];
   List<Color> colors1 = [Colors.white, Colors.black, Colors.white, Colors.white];
   List<Color> colors2 = [Colors.lightBlueAccent, Colors.white, Colors.lightBlueAccent, Colors.lightBlueAccent];
