@@ -19,6 +19,55 @@ import 'package:fluttertest/pages/sleep_page.dart';
 
 import 'package:fluttertest/databasehandler/headacheForm.dart';
 
+// Helper functions // // // // // // // // // // // // // // // // // // // // // // // // //
+Future<List<Map<String, dynamic>>>fetchDataHeadache(String userID) async {
+  // Fetch relevant record from DB
+  // HeadacheFormDBHelper.instance.fetchTableData();
+  var Qresult = await HeadacheFormDBHelper.instance.fetchValidEntriesForUser(userID);
+  List<Map<String, dynamic>> Result = Qresult ?? [];
+
+  return Result;
+}
+
+Future<List<Map<String, dynamic>>> reformatDataHeadache(Future<List<Map<String, dynamic>>>? qResult) async{
+  List<Map<String, dynamic>> Result = await qResult ?? [];
+  // print("query input in reformatData():");
+  // print(qResult);
+  List<Map<String, dynamic>> data = [];
+  for (int i = 0 ; i < Result.length ; i++){
+    Map<String, dynamic> entry = {};
+    entry['headacheEntryid'] = Result[i]['headacheEntryid'] ?? -1;
+
+    DateTime ts1 = milisecondsToDatetime(Result[i]['TS_DATE'] ?? 0);
+    entry['TS_DATE'] = ts1.toString();
+
+    entry['intensityLevel'] = Result[i]['intensityLevel'] ?? 0;
+    entry['medicineName'] = Result[i]['medicineName'] ?? "";
+
+    // Assume partial if somehow null
+    entry['Partial'] = Result[i]['Partial'] ?? 1;
+
+    DateTime ts2 = DateTime.fromMillisecondsSinceEpoch(Result[i]['medicineDateMS'] ?? 0);
+    entry['medicineDateMs'] = ts2.toString().substring(0,10);
+
+    // print("Entry ${i}");
+    // print(entry);
+
+    data.add(entry);
+  }
+
+  // print("ReformatData: In function ");
+  // print(data);
+  return data;
+}
+
+DateTime milisecondsToDatetime(int ms) {
+  int ts = ms * 1000;
+  var date = DateTime.fromMillisecondsSinceEpoch(ts);
+  return date;
+}
+
+// Trends' main page // // // // // // // // // // // // // // // // // // // // // // // // //
 class Trends extends StatelessWidget {
   final String userID;
 
@@ -190,13 +239,13 @@ class Trends extends StatelessWidget {
   }
 }
 
-
-
+// Habit relation page // // // // // // // // // // // // // // // // // // // // // Trying to merge
 class HabitHeadacheRelationPage extends StatefulWidget {
   @override
   _HabitHeadacheRelationPageState createState() => _HabitHeadacheRelationPageState();
 }
 
+// Need to uncomment body buttons
 class _HabitHeadacheRelationPageState extends State<HabitHeadacheRelationPage> {
   String? _tempHtmlFilePath;
   WebViewController? _controller;
@@ -263,12 +312,12 @@ class _HabitHeadacheRelationPageState extends State<HabitHeadacheRelationPage> {
               customButton(context, 'Sleep', 'lib/images/sleep.png',  () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => SleepPage()));
               }),
-              customButton(context, 'Stress', 'lib/images/stress.png',  () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => HeadacheMedicinePage()));
-              }),
-              customButton(context, 'Exercise', 'lib/images/exercise.png',  () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SymptomsIntensityPage()));
-              }),
+              // customButton(context, 'Stress', 'lib/images/stress.png',  () {
+              //   Navigator.push(context, MaterialPageRoute(builder: (context) => HeadacheMedicinePage()));
+              // }),
+              // customButton(context, 'Exercise', 'lib/images/exercise.png',  () {
+              //   Navigator.push(context, MaterialPageRoute(builder: (context) => SymptomsIntensityPage()));
+              // }),
             ],
           ),
 
@@ -324,53 +373,9 @@ class _HabitHeadacheRelationPageState extends State<HabitHeadacheRelationPage> {
 
 }
 
-Future<List<Map<String, dynamic>>>fetchData(String userID) async {
-  // Fetch relevant record from DB
-  // HeadacheFormDBHelper.instance.fetchTableData();
-  var Qresult = await HeadacheFormDBHelper.instance.fetchValidEntriesForUser(userID);
-  List<Map<String, dynamic>> Result = Qresult ?? [];
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 
-  return Result;
-}
-
-Future<List<Map<String, dynamic>>> reformatData(Future<List<Map<String, dynamic>>>? qResult) async{
-  List<Map<String, dynamic>> Result = await qResult ?? [];
-  // print("query input in reformatData():");
-  // print(qResult);
-  List<Map<String, dynamic>> data = [];
-  for (int i = 0 ; i < Result.length ; i++){
-    Map<String, dynamic> entry = {};
-    entry['headacheEntryid'] = Result[i]['headacheEntryid'] ?? -1;
-
-    DateTime ts1 = milisecondsToDatetime(Result[i]['TS_DATE'] ?? 0);
-    entry['TS_DATE'] = ts1.toString();
-
-    entry['intensityLevel'] = Result[i]['intensityLevel'] ?? 0;
-    entry['medicineName'] = Result[i]['medicineName'] ?? "";
-
-    // Assume partial if somehow null
-    entry['Partial'] = Result[i]['Partial'] ?? 1;
-
-    DateTime ts2 = DateTime.fromMillisecondsSinceEpoch(Result[i]['medicineDateMS'] ?? 0);
-    entry['medicineDateMs'] = ts2.toString().substring(0,10);
-
-    // print("Entry ${i}");
-    // print(entry);
-
-    data.add(entry);
-  }
-
-  // print("ReformatData: In function ");
-  // print(data);
-  return data;
-}
-
-DateTime milisecondsToDatetime(int ms) {
-  int ts = ms * 1000;
-  var date = DateTime.fromMillisecondsSinceEpoch(ts);
-  return date;
-}
-
+// Headache trends page
 class HeadacheTrendsPage extends StatefulWidget {
   final String userID;
   final Future<List<Map<String, dynamic>>> headacheQueryResult;
@@ -379,13 +384,13 @@ class HeadacheTrendsPage extends StatefulWidget {
   const HeadacheTrendsPage({Key? key, required this.userID, required this.headacheQueryResult,required this.reformattedData}) : super(key: key);
 
   factory HeadacheTrendsPage.async({required Key key, required String userID}) {
-    Future<List<Map<String, dynamic>>> queryResult = fetchData(userID);
+    Future<List<Map<String, dynamic>>> queryResult = fetchDataHeadache(userID);
 
     return HeadacheTrendsPage(
       key: key,
       userID: userID,
       headacheQueryResult: queryResult,
-      reformattedData: reformatData(queryResult),
+      reformattedData: reformatDataHeadache(queryResult),
     );
   }
 
