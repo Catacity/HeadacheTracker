@@ -93,8 +93,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ? SingleChildScrollView(child: pages[currentIndex])
           : currentIndex == 2
           ? HeadTrackerPage.async(key: ValueKey(now),userID:userID)
+          : currentIndex == 3
+          ? Trends.async(key: ValueKey(now),userID:userID)
           : pages[currentIndex],
-
 
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,

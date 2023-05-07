@@ -16,74 +16,28 @@ import 'package:fluttertest/pages/headache_medicine_page.dart';
 import 'package:fluttertest/pages/symptoms_intesity_page.dart';
 import 'package:fluttertest/pages/daily_headache_data.dart';
 import 'package:fluttertest/pages/sleep_page.dart';
-
 import 'package:fluttertest/databasehandler/headacheForm.dart';
+import 'package:fluttertest/databasehandler/dailyForm.dart';
 
-// Helper functions // // // // // // // // // // // // // // // // // // // // // // // // //
-Future<List<Map<String, dynamic>>>fetchDataHeadache(String userID) async {
-  // Fetch relevant record from DB
-  // HeadacheFormDBHelper.instance.fetchTableData();
-  var Qresult = await HeadacheFormDBHelper.instance.fetchValidEntriesForUser(userID);
-  List<Map<String, dynamic>> Result = Qresult ?? [];
-
-  return Result;
-}
-
-Future<List<Map<String, dynamic>>> reformatDataHeadache(Future<List<Map<String, dynamic>>>? qResult) async{
-  List<Map<String, dynamic>> Result = await qResult ?? [];
-  // print("query input in reformatData():");
-  // print(qResult);
-  List<Map<String, dynamic>> data = [];
-  for (int i = 0 ; i < Result.length ; i++){
-    Map<String, dynamic> entry = {};
-    entry['headacheEntryid'] = Result[i]['headacheEntryid'] ?? -1;
-
-    DateTime ts1 = milisecondsToDatetime(Result[i]['TS_DATE'] ?? 0);
-    entry['TS_DATE'] = ts1.toString();
-
-    entry['intensityLevel'] = Result[i]['intensityLevel'] ?? 0;
-    entry['medicineName'] = Result[i]['medicineName'] ?? "";
-
-    // Assume partial if somehow null
-    entry['Partial'] = Result[i]['Partial'] ?? 1;
-
-    DateTime ts2 = DateTime.fromMillisecondsSinceEpoch(Result[i]['medicineDateMS'] ?? 0);
-    entry['medicineDateMs'] = ts2.toString().substring(0,10);
-
-    // print("Entry ${i}");
-    // print(entry);
-
-    data.add(entry);
-  }
-
-  // print("ReformatData: In function ");
-  // print(data);
-  return data;
-}
-
-DateTime milisecondsToDatetime(int ms) {
-  int ts = ms * 1000;
-  var date = DateTime.fromMillisecondsSinceEpoch(ts);
-  return date;
-}
-
-// Trends' main page // // // // // // // // // // // // // // // // // // // // // // // // //
 class Trends extends StatefulWidget {
   // Initial data fetching all preformed in this page, so I made this stateful
   final String userID;
   final Future<List<Map<String, dynamic>>> headacheQueryResult;
-  final Future<List<Map<String, dynamic>>> reformattedData;
+  final Future<List<Map<String, dynamic>>> reformattedHData;
+  final Future<List<Map<String, dynamic>>> reformattedDData;
 
-  const Trends({Key? key, required this.userID, required this.headacheQueryResult, required this.reformattedData}) : super(key: key);
+  const Trends({Key? key, required this.userID, required this.headacheQueryResult, required this.reformattedHData, required this.reformattedDData}) : super(key: key);
 
   factory Trends.async({required Key key, required String userID}) {
     Future<List<Map<String, dynamic>>> HQueryResult = fetchDataHeadache(userID);
+    Future<List<Map<String, dynamic>>> DQueryResult = fetchDataDaily(userID);
 
     return Trends(
       key: key,
       userID: userID,
       headacheQueryResult: HQueryResult,
-      reformattedData: reformatDataHeadache(HQueryResult),
+      reformattedHData: reformatDataHeadache(HQueryResult),
+      reformattedDData: reformatDataDaily(DQueryResult),
     );
   }
 
@@ -179,6 +133,10 @@ class _TrendsPageState extends State<Trends> {
 
   List<Map<String, dynamic>>? headacheQueryResult;
   String? reformattedStringHeadache;
+  String? reformattedStringDailyNHeadache;
+
+  List<Map<String, dynamic>>? reformattedH;
+  List<Map<String, dynamic>>? reformattedD;
 
   @override
   void initState() {
@@ -190,12 +148,34 @@ class _TrendsPageState extends State<Trends> {
       });
     });
 
-    widget.reformattedData.then((qResult) {
+    widget.reformattedHData.then((qResult) {
       List<Map<String, dynamic>> data = qResult;
       setState(() {
         reformattedStringHeadache = jsonEncode(data);
       });
+    });
 
+    Future.wait([
+      widget.reformattedHData.then((value) => reformattedH = value),
+      widget.reformattedDData.then((value) => reformattedD = value),
+    ]).then((_) {
+
+      List<Map<String, dynamic>> dailyData = reformattedH ?? [];
+      List<Map<String, dynamic>> headacheData = reformattedD ?? [];
+
+      List<Map<String, dynamic>> combinedData = [];
+      for (var daily in dailyData) {
+        for (var headache in headacheData) {
+          if (daily['TS_DATE'] == headache['TS_DATE']) {
+            Map<String, dynamic> combined = {...daily, ...headache};
+            combinedData.add(combined);
+          }
+        }
+      }
+
+      setState(() {
+        reformattedStringDailyNHeadache = json.encode(combinedData);
+      });
     });
 
   }
@@ -301,7 +281,7 @@ class _TrendsPageState extends State<Trends> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => HabitHeadacheRelationPage(headacheJsonString: reformattedStringHeadache ?? "{}"),
+                      builder: (context) => HabitHeadacheRelationPage(headacheJsonString: reformattedStringHeadache ?? "{}",headacheNDailyString: reformattedStringDailyNHeadache ?? "{}"),
                     ),
                   );
                 },
@@ -368,14 +348,16 @@ class _TrendsPageState extends State<Trends> {
 // Habit relation page // // // // // // // // // // // // // // // // // // // // // Trying to merge
 class HabitHeadacheRelationPage extends StatefulWidget {
   final String headacheJsonString;
+  final String headacheNDailyString;
 
-  const HabitHeadacheRelationPage({Key? key, required this.headacheJsonString}) : super(key: key);
+  const HabitHeadacheRelationPage({Key? key, required this.headacheJsonString, required this.headacheNDailyString}) : super(key: key);
 
-  factory HabitHeadacheRelationPage.async({required Key key, required String headacheJsonString}) {
+  factory HabitHeadacheRelationPage.async({required Key key, required String headacheJsonString, required String headacheNDailyString}) {
 
     return HabitHeadacheRelationPage(
         key: key,
-        headacheJsonString: headacheJsonString
+        headacheJsonString: headacheJsonString,
+        headacheNDailyString: headacheNDailyString
     );
   }
 
@@ -404,7 +386,7 @@ class _HabitHeadacheRelationPageState extends State<HabitHeadacheRelationPage> {
     Directory tempDir = await getTemporaryDirectory();
     File tempFile = File('${tempDir.path}/temp.html');
     await tempFile.writeAsString(
-      fileText.replaceAll('{{data}}', dataToJson1()), // Replace {{data}} with JSON data
+      fileText.replaceAll('{{data}}', widget.headacheNDailyString), // Replace {{data}} with JSON data
       flush: true,
     );
     return tempFile;
@@ -447,7 +429,7 @@ class _HabitHeadacheRelationPageState extends State<HabitHeadacheRelationPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               customButton(context, 'Sleep', 'lib/images/sleep.png',  () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SleepPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SleepPage(jsonData:widget.headacheNDailyString)));
               }),
               customButton(context, 'Stress', 'lib/images/stress.png',  () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => HeadacheMedicinePage(jsonData:widget.headacheJsonString)));

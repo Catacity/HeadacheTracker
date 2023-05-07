@@ -13,6 +13,18 @@ import 'dart:convert';
 import 'package:fluttertest/pages/daily_headache_data.dart';
 
 class SleepPage extends StatefulWidget {
+  final String? jsonData;
+
+  const SleepPage({Key? key, required this.jsonData}) : super(key: key);
+
+  factory SleepPage.async({required Key key, required String? jsonData}) {
+
+    return SleepPage(
+        key: key,
+        jsonData: jsonData
+    );
+  }
+
   @override
   _SleepPageState createState() => _SleepPageState();
 }
@@ -20,6 +32,7 @@ class SleepPage extends StatefulWidget {
 class _SleepPageState extends State<SleepPage> {
   String? _tempHtmlFilePath;
   WebViewController? _controller;
+  String? jsonStr;
 
   @override
   void initState() {
@@ -28,6 +41,10 @@ class _SleepPageState extends State<SleepPage> {
       setState(() {
         _tempHtmlFilePath = file.uri.toString();
       });
+    });
+
+    setState(() {
+      jsonStr = widget.jsonData;
     });
   }
 
@@ -38,7 +55,7 @@ class _SleepPageState extends State<SleepPage> {
     Directory tempDir = await getTemporaryDirectory();
     File tempFile = File('${tempDir.path}/temp.html');
     await tempFile.writeAsString(
-      fileText.replaceAll('{{data}}', dataToJson1()), // Replace {{data}} with JSON data
+      fileText.replaceAll('{{data}}', jsonStr ?? "{}"), // Replace {{data}} with JSON data
       flush: true,
     );
     return tempFile;
