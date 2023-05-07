@@ -39,7 +39,7 @@ dependencies:
   syncfusion_flutter_maps: ^21.1.41
   flutter_svg: ^0.22.0
   flutter_heat_map: ^1.2.1
-   webview_flutter: ^2.0.14
+  webview_flutter: ^2.0.14
 
 
   # The following adds the Cupertino Icons font to your application.
