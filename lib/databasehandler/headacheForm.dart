@@ -286,7 +286,7 @@ class SymptomDBHelper{
         orderBy: 'headacheEntryid DESC',
         );
 
-    print(result);
+    // print(result);
     return result;
   }
 
