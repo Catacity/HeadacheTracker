@@ -14,6 +14,8 @@ import 'dart:convert';
 import 'package:fluttertest/pages/headache_intensity_page.dart';
 import 'package:fluttertest/pages/headache_medicine_page.dart';
 import 'package:fluttertest/pages/symptoms_intesity_page.dart';
+import 'package:fluttertest/pages/daily_headache_data.dart';
+import 'package:fluttertest/pages/sleep_page.dart';
 
 import 'package:fluttertest/databasehandler/headacheForm.dart';
 
@@ -189,22 +191,132 @@ class Trends extends StatelessWidget {
 }
 
 
+
 class HabitHeadacheRelationPage extends StatefulWidget {
   @override
   _HabitHeadacheRelationPageState createState() => _HabitHeadacheRelationPageState();
 }
 
 class _HabitHeadacheRelationPageState extends State<HabitHeadacheRelationPage> {
+  String? _tempHtmlFilePath;
+  WebViewController? _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadHtmlFromAssets().then((File file) {
+      setState(() {
+        _tempHtmlFilePath = file.uri.toString();
+      });
+    });
+  }
+
+  Future<File> _loadHtmlFromAssets() async {
+    // Replace 'assets/html/sample.html' with the path to your HTML file
+    String fileText = await rootBundle.loadString('assets/vega_lite5.html');
+
+    Directory tempDir = await getTemporaryDirectory();
+    File tempFile = File('${tempDir.path}/temp.html');
+    await tempFile.writeAsString(
+      fileText.replaceAll('{{data}}', dataToJson1()), // Replace {{data}} with JSON data
+      flush: true,
+    );
+    return tempFile;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Headache Trends')),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 10),
-            Text("Welcome to Habit trends")
+      appBar: AppBar(
+        title: Text('Headache and Habit Analysis'),
+      ),
+      body: _tempHtmlFilePath == null
+          ? Center(child: CircularProgressIndicator())
+          : Column(
+        children: [
+          Flexible(
+            child: Container(
+              height: 500, // set the height as needed
+              child: WebView(
+                initialUrl: _tempHtmlFilePath,
+                javascriptMode: JavascriptMode.unrestricted,
+                onWebViewCreated: (WebViewController webViewController) {
+                  _controller = webViewController;
+                },
+                onPageFinished: (String url) {
+                  _controller?.evaluateJavascript('updateChart()');
+                },
+              ),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'See more visualizations and insights',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              customButton(context, 'Sleep', 'lib/images/sleep.png',  () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SleepPage()));
+              }),
+              customButton(context, 'Stress', 'lib/images/stress.png',  () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => HeadacheMedicinePage()));
+              }),
+              customButton(context, 'Exercise', 'lib/images/exercise.png',  () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SymptomsIntensityPage()));
+              }),
             ],
+          ),
+
+
+
+        ],
+      ),
+    );
+
+  }
+
+  Widget customButton(BuildContext context, String text, String imagePath,  void Function() onPressed) {
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        width: MediaQuery.of(context).size.width / 3 - 20,
+        height: 150,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25),
+          color: Colors.blue,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 10,
+              offset: Offset(0, 5),
+            ),
+          ],
+        ),
+        child: TextButton(
+          onPressed: onPressed,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                imagePath,
+                height: 40,
+
+              ),
+              SizedBox(height: 5),
+              Text(
+                text,
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
