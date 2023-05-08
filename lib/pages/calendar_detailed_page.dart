@@ -216,37 +216,6 @@ class _DetailedInfoPageState extends State<DetailedInfoPage> {
                     ]
                   ),
                 ),
-                Expanded(child:Row(
-                  children: [
-                    Text(
-                      'Food eaten: Todo!',
-                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                    ),
-                    // Expanded(
-                    //   child: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     children: [
-                    //       GestureDetector(
-                    //         onTap: getImage,
-                    //         child: Container(
-                    //           height: 50,
-                    //           width: 50,
-                    //           decoration: BoxDecoration(
-                    //             color: Colors.grey.shade300,
-                    //             border: Border.all(color: Colors.black),
-                    //           ),
-                    //           child: _image == null
-                    //               ? Icon(Icons.image)
-                    //               : Image.file(_image!),
-                    //         ),
-                    //       ),
-                    //       SizedBox(height: 10),
-                    //
-                    //     ],
-                    //   ),
-                    // ),
-                  ],
-                ),),
                 Expanded(child: Row(
                   children: [
                     Text(
@@ -258,13 +227,30 @@ class _DetailedInfoPageState extends State<DetailedInfoPage> {
                     ),
                   ],
                 ),),
-                SizedBox(width: 5),
                 Text(
                   '${dailyDesc}',
                   style: TextStyle(
                     fontSize: 22,
                   ),
                 ),
+                Expanded(child: Row(
+                  children: [
+                    Text(
+                      'Stress level:',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      '${stressLvText}',
+                      style: TextStyle(
+                        fontSize: 22,
+                      ),
+                    ),
+                  ],
+                ),),
                 SizedBox(width: 5),
                 Expanded(child: Row(
                   children: [
