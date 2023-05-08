@@ -13,6 +13,18 @@ import 'dart:convert';
 import 'package:fluttertest/pages/daily_headache_data.dart';
 
 class ExercisePage extends StatefulWidget {
+  final String? jsonData;
+
+  const ExercisePage({Key? key, required this.jsonData}) : super(key: key);
+
+  factory ExercisePage.async({required Key key, required String? jsonData}) {
+
+    return ExercisePage(
+        key: key,
+        jsonData: jsonData
+    );
+  }
+
   @override
   _ExercisePageState createState() => _ExercisePageState();
 }
@@ -20,6 +32,8 @@ class ExercisePage extends StatefulWidget {
 class _ExercisePageState extends State<ExercisePage> {
   String? _tempHtmlFilePath;
   WebViewController? _controller;
+
+  String? jsonStr;
 
   @override
   void initState() {
@@ -29,6 +43,11 @@ class _ExercisePageState extends State<ExercisePage> {
         _tempHtmlFilePath = file.uri.toString();
       });
     });
+
+    setState(() {
+      jsonStr = widget.jsonData;
+    });
+
   }
 
   Future<File> _loadHtmlFromAssets() async {
@@ -38,7 +57,7 @@ class _ExercisePageState extends State<ExercisePage> {
     Directory tempDir = await getTemporaryDirectory();
     File tempFile = File('${tempDir.path}/temp.html');
     await tempFile.writeAsString(
-      fileText.replaceAll('{{data}}', dataToJson1()), // Replace {{data}} with JSON data
+      fileText.replaceAll('{{data}}', jsonStr ?? "{}"), // Replace {{data}} with JSON data
       flush: true,
     );
     return tempFile;

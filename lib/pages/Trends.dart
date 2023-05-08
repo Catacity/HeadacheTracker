@@ -435,10 +435,10 @@ class _HabitHeadacheRelationPageState extends State<HabitHeadacheRelationPage> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => SleepPage(jsonData:widget.headacheNDailyString)));
               }),
               customButton(context, 'Stress', 'lib/images/stress.png',  () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => StressPage(jsonData:widget.headacheJsonString)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => StressPage(jsonData:widget.headacheNDailyString)));
               }),
               customButton(context, 'Exercise', 'lib/images/exercise.png',  () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ExercisePage(jsonData:widget.headacheJsonString)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ExercisePage(jsonData:widget.headacheNDailyString)));
               }),
             ],
           ),
