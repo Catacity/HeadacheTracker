@@ -18,6 +18,9 @@ import 'package:fluttertest/pages/daily_headache_data.dart';
 import 'package:fluttertest/pages/sleep_page.dart';
 import 'package:fluttertest/databasehandler/headacheForm.dart';
 import 'package:fluttertest/databasehandler/dailyForm.dart';
+import 'package:fluttertest/pages/stress.dart';
+import 'package:fluttertest/pages/exercise_page.dart';
+
 
 class Trends extends StatefulWidget {
   // Initial data fetching all preformed in this page, so I made this stateful
@@ -432,10 +435,10 @@ class _HabitHeadacheRelationPageState extends State<HabitHeadacheRelationPage> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => SleepPage(jsonData:widget.headacheNDailyString)));
               }),
               customButton(context, 'Stress', 'lib/images/stress.png',  () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => HeadacheMedicinePage(jsonData:widget.headacheJsonString)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => StressPage(jsonData:widget.headacheJsonString)));
               }),
               customButton(context, 'Exercise', 'lib/images/exercise.png',  () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SymptomsIntensityPage(jsonData:widget.headacheJsonString)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ExercisePage(jsonData:widget.headacheJsonString)));
               }),
             ],
           ),
