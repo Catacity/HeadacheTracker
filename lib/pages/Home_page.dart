@@ -8,6 +8,7 @@ import 'package:fluttertest/components/square_tile.dart';
 import 'Trends.dart';
 import 'package:fluttertest/pages/userprofile_info.dart';
 import 'notifications.dart';
+import 'package:fluttertest/pages/sidebar.dart';
 
 // For testing:
 String userID = "3";
@@ -50,8 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: IconButton(
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => userprofile_info()));
-                    //  goto profile page!
+                        MaterialPageRoute(builder: (_) => sidebar()));
+                    //  goto sidebar option page!
                   },
                   icon: Icon(
                     Icons.person_pin,
