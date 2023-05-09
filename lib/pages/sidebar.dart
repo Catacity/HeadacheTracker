@@ -7,8 +7,6 @@ import 'privacy_policy.dart';
 import 'settings.dart';
 import 'userprofile_info.dart';
 
-import 'dart:js';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertest/pages/daily_form.dart';
