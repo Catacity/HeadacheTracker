@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertest/pages/daily_form.dart';
 import 'package:fluttertest/pages/calendar.dart';
 import 'package:fluttertest/pages/main_page.dart';
-// import 'package:fluttertest/pages/login_page.dart';
 import 'package:fluttertest/components/button.dart';
 import 'package:fluttertest/components/text_field.dart';
 import 'package:fluttertest/components/square_tile.dart';
 import 'Trends.dart';
+import 'package:fluttertest/pages/userprofile_info.dart';
+import 'notifications.dart';
 
 // For testing:
 String userID = "3";
@@ -48,7 +49,9 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                 child: IconButton(
                   onPressed: () {
-                    // Impletement goto page here!
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => userprofile_info()));
+                    //  goto profile page!
                   },
                   icon: Icon(
                     Icons.person_pin,
@@ -72,6 +75,9 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                 child: IconButton(
                   onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => NotificationsPage()));
+                    //  goto profile page!
                     // Impletement goto page here!
                   },
                   icon: Icon(
