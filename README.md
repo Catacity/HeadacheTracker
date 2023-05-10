@@ -1,6 +1,9 @@
-# fluttertest
+# Headache Tracking
 
-A new Flutter project.
+To run the code. On the termina cd to project directory and type:
+//
+flutter run
+//
 
 ## Getting Started
 
