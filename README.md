@@ -1,19 +1,10 @@
 # Headache Tracking
 
-To run the code. On the termina cd to project directory and type:
-//
+To run the code use Android Studion. On the terminal cd to project directory and type:
+```
 flutter run
-//
+```
 
-## Getting Started
+## Project Overview
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This is an Android application project. This app contains 4 main pages: daily form, headache form, calendar and trends. The daily and headache form collect user data. The calendar and trends page allow user to visualize this data.
